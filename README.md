@@ -5,6 +5,14 @@
 > 这是原先[ctree](https://github.com/wsfe/vue-tree/tree/2.x)的升级版本，同时支持 vue2 和 vue3。
 > 新版改变了包的名称和部分 export 模块名称。
 
+## **注意**
+
+`@wsfe/vue-tree` 使用了 `vue-demi` 包尝试使组件在 vue 2/3 都通用。但遗憾的是 `vue-demi` 并不能完美使 vue3 组件兼容 vue2 。
+
+`@wsfe/vue-tree` 将使用最新版 vue(3.x) 开发
+
+因此，建议 vue2 用户使用 2.x 使用 `@wsfe/ctree` 包。
+
 ## 案例
 
 [在线 demo](https://wsfe.github.io/vue-tree/)

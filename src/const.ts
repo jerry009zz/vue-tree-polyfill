@@ -1,3 +1,5 @@
+import { IEventNames } from "./store/tree-store"
+
 //#region ignoreMode
 export enum ignoreEnum {
   none = 'none',
@@ -8,8 +10,7 @@ export enum ignoreEnum {
 
 //#region API
 // Tree API
-// 方便获取 TypeScript 类型，写成枚举，但是为了打包体积减小，定义为 const ，并重新声明一个 JavaScript 数组
-const enum apiEnum {
+export const TREE_API_METHODS = [
   'setData',
   'setChecked',
   'setCheckedKeys',
@@ -41,54 +42,9 @@ const enum apiEnum {
   'showCheckedNodes',
   'loadRootNodes',
   'scrollTo'
-}
+] as const
 
-export const API_METHODS = [
-  'setData',
-  'setChecked',
-  'setCheckedKeys',
-  'checkAll',
-  'clearChecked',
-  'setSelected',
-  'clearSelected',
-  'setExpand',
-  'setExpandKeys',
-  'setExpandAll',
-  'getCheckedNodes',
-  'getCheckedKeys',
-  'getIndeterminateNodes',
-  'getSelectedNode',
-  'getSelectedKey',
-  'getExpandNodes',
-  'getExpandKeys',
-  'getCurrentVisibleNodes',
-  'getNode',
-  'getTreeData',
-  'getFlatData',
-  'getNodesCount',
-  'insertBefore',
-  'insertAfter',
-  'append',
-  'prepend',
-  'remove',
-  'filter',
-  'showCheckedNodes',
-  'loadRootNodes',
-  'scrollTo'
-]
-
-export type ApiType = keyof typeof apiEnum
-
-// TreeSearch API
-const enum treeSearchApiEnum {
-  'clearKeyword',
-  'getKeyword',
-  'search'
-}
-
-export const TREE_SEARCH_API_METHODS = ['clearKeyword', 'getKeyword', 'search']
-
-export type TreeSearchApiType = keyof typeof treeSearchApiEnum
+export const TREE_SEARCH_API_METHODS = [...TREE_API_METHODS, 'clearKeyword', 'getKeyword', 'search'] as const
 
 export enum placementEnum {
   'bottom-start' = 'bottom-start',
@@ -129,4 +85,15 @@ export const TREE_NODE_EVENTS = [
   'node-dragover',
   'node-dragleave',
   'node-drop'
+]
+
+export const storeEvents: Array<keyof IEventNames> = [
+  'expand',
+  'select',
+  'unselect',
+  'selected-change',
+  'check',
+  'uncheck',
+  'checked-change',
+  'set-data'
 ]

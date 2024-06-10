@@ -17,7 +17,7 @@
 <script lang="ts">
 import { VTreeSearch } from '../src'
 import treeDataGenerator from '../tests/tree-data-generator'
-import { defineComponent, onMounted, reactive, ref } from 'vue-demi'
+import { defineComponent, onMounted, reactive, ref } from 'vue'
 const genData = (extra = {}) => {
   return treeDataGenerator(
     Object.assign(
@@ -42,9 +42,9 @@ export default defineComponent({
     // const data = reactive(genData().data)
     const data = genData().data
     const value = ref('2')
-    const treeSearchRef = ref()
+    const treeSearchRef = ref<InstanceType<typeof VTreeSearch>>()
     onMounted(() => {
-      console.log(treeSearchRef.value.setData(data))
+      console.log(treeSearchRef.value?.setData(data))
     })
     return {
       treeSearchRef,

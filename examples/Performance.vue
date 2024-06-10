@@ -84,7 +84,7 @@
 <script lang="ts">
 import VTree from '../src'
 import treeDataGenerator from '../tests/tree-data-generator'
-import { computed, defineComponent, ref } from 'vue-demi'
+import { computed, defineComponent, ref } from 'vue'
 
 interface TreeMockMeta {
   treeDepth: number

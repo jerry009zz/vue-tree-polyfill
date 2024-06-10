@@ -8,9 +8,3 @@ import './styles/index.less'
 // export * from './types'
 
 export default VTree
-
-// export {
-//   CTreeNode,
-//   CTreeSearch,
-//   CTreeDrop,
-// }

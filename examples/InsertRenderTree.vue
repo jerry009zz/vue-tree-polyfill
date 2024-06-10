@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import VTree, { TreeNode } from '../src'
-import { defineComponent, reactive, ref, h } from 'vue-demi'
+import { defineComponent, reactive, ref, h } from 'vue'
 export default defineComponent({
   name: 'InsertRenderTree',
   components: {

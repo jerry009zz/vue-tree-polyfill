@@ -46,7 +46,7 @@
 import VTree, { TreeNode } from '../src'
 import { IgnoreType } from '../src/types'
 import treeDataGenerator from '../tests/tree-data-generator'
-import { defineComponent, ref, nextTick } from 'vue-demi'
+import { defineComponent, ref, nextTick } from 'vue'
 
 const genData = (extra = {}) => {
   return treeDataGenerator(

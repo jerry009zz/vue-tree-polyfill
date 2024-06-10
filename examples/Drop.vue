@@ -3,6 +3,7 @@
     <div style="width: 200px">
       <p>自定义展示 slot ：</p>
       <VTreeDrop
+        ref="treeDropRef"
         v-model="value"
         :data="data"
         checkable
@@ -51,6 +52,7 @@
         :placement="placement"
         :dropdown-min-width="300"
         dropdown-width-fixed
+        @selected-change="handleSelectedChange"
       >
         <template #empty>slot 传进来的暂无数据</template>
       </VTreeDrop>
@@ -63,7 +65,7 @@
 import { VTreeDrop, TreeNode } from '../src'
 import type { PlacementType } from '../src/types'
 import treeDataGenerator from '../tests/tree-data-generator'
-import { defineComponent, ref } from 'vue-demi'
+import { defineComponent, onMounted, ref } from 'vue'
 
 const genData = (extra = {}) => {
   return treeDataGenerator(
@@ -93,12 +95,22 @@ export default defineComponent({
     function handleCheckedChange() {
       console.log('checked-change')
     }
+    function handleSelectedChange() {
+      console.log('selected-change')
+    }
+    const treeDropRef = ref<InstanceType<typeof VTreeDrop>>()
+    onMounted(() => {
+      console.log('drop titleField', treeDropRef.value?.titleField)
+      console.log('drop keyField', treeDropRef.value?.keyField)
+    })
     return {
+      treeDropRef,
       data,
       value,
       value2,
       placement,
-      handleCheckedChange
+      handleCheckedChange,
+      handleSelectedChange,
     }
   }
 })

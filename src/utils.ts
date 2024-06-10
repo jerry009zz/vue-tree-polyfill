@@ -1,22 +1,30 @@
-import CTree from './components/Tree.vue'
-import type { Ref } from 'vue-demi'
-import { API_METHODS } from './const'
+import { Ref } from "vue";
 
-type CTreeInstanceType = InstanceType<typeof CTree>
-type CtreeInstanceKeyType = keyof CTreeInstanceType
-
-// Vue 2.6 内部没改变的话可以这样获取 Vue.extend 中的 methods。Vue 版本有升级的话需要注意这个特性有没有改变
-// 如果是对象的话可以直接 CTree.methods ，并且是安全的。
-// let ctreeMethods: CTreeApiMethodsType = {} as CTreeApiMethodsType
-
-export function getCtreeMethods<T>(treeRef: Ref<T>) {
-  return API_METHODS.reduce((prev, cur) => {
-    prev[cur] = function (...args: any[]) {
-      return (treeRef.value[cur as keyof T] as Function).apply(
-        treeRef.value,
-        args
-      )
+export const getCtreeMethods = <T extends string, K extends Record<T, any>>(apiMethods: readonly T[], ref: Ref<K | null>): Pick<K, T> => {
+  return apiMethods.reduce((prev, cur) => {
+    const fn = (...args: any[]) => {
+      const value = ref.value?.[cur]
+      if (typeof value !== 'function') return
+      return value(...args)
     }
+    prev[cur] = fn as K[T]
     return prev
-  }, {} as Record<string, Function>)
+  }, {} as Pick<K, T>)
+}
+
+type PickReadonly<T, K extends keyof T> = {
+  readonly [P in K]: T[P];
+};
+
+export const pickReadonly = <T extends object, K extends keyof T>(
+  obj: Readonly<T>,
+  ...keys: K[]
+): PickReadonly<T, K> => {
+  const picked: Partial<PickReadonly<T, K>> = {};
+  keys.forEach(key => {
+    if (obj.hasOwnProperty(key)) {
+      picked[key] = obj[key];
+    }
+  });
+  return picked as PickReadonly<T, K>;
 }
