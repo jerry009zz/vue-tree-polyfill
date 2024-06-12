@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest'
+
 import { mount } from '@vue/test-utils'
 import VTree from '../../src/components/Tree.vue'
 import VNode from '../../src/components/TreeNode.vue'
@@ -102,7 +104,7 @@ describe('树展示测试', () => {
     )
   })
 
-  it('本地过滤 - 不展开节点', done => {
+  it('本地过滤 - 不展开节点', () => new Promise<void>(done => {
     const data = genData({ inOrder: true, forceString: true }).data
     const wrapper = mount(VTree as any, {
       propsData: {
@@ -138,9 +140,9 @@ describe('树展示测试', () => {
 
       done()
     })
-  })
+  }))
 
-  it('样式正确性', done => {
+  it('样式正确性', () => new Promise<void>(done => {
     const data = genData().data
     data[0].checked = true
     data[1].indeterminate = true
@@ -179,9 +181,9 @@ describe('树展示测试', () => {
 
       done()
     })
-  })
+  }))
 
-  it('点击展开节点', done => {
+  it('点击展开节点', () => new Promise<void>(done => {
     const data = genData().data
     const wrapper = mount(VTree as any, {
       propsData: {
@@ -196,7 +198,6 @@ describe('树展示测试', () => {
       }) as any[]
 
       const node = treeNodes[0].find('.ctree-tree-node__expand')
-      console.log(node)
 
       treeNodes[0].find('.ctree-tree-node__expand i').trigger('click')
 
@@ -205,7 +206,7 @@ describe('树展示测试', () => {
         done()
       })
     })
-  })
+  }))
 })
 
 describe('树单选测试', () => {
@@ -251,7 +252,7 @@ describe('树单选测试', () => {
     expect((vm as any).nonReactive.store.flatData[0].selected).toBe(true)
   })
 
-  it('通过点击选中', done => {
+  it('通过点击选中', () => new Promise<void>(done => {
     const data = genData().data
     const wrapper = mount(VTree as any, {
       propsData: {
@@ -284,7 +285,7 @@ describe('树单选测试', () => {
         done()
       })
     })
-  })
+  }))
 })
 
 describe('树多选测试', () => {
@@ -373,7 +374,7 @@ describe('树多选测试', () => {
     expect(wrapper.emitted()['update:modelValue'].length).toBe(1)
   })
 
-  it('通过点击选中', done => {
+  it('通过点击选中', () => new Promise<void>(done => {
     const data = genData().data
     data[1].checked = true
     let modelValue: Array<string | number> = [data[0].id as string]
@@ -414,9 +415,9 @@ describe('树多选测试', () => {
         done()
       })
     })
-  })
+  }))
 
-  it('单选与多选并存', done => {
+  it('单选与多选并存', () => new Promise<void>(done => {
     const data = genData().data
     data[0].checked = true
     data[0].selected = true
@@ -461,11 +462,11 @@ describe('树多选测试', () => {
     })
 
     expect(wrapper.emitted()['update:modelValue'].length).toBe(1)
-  })
+  }))
 })
 
 describe('树远程测试', () => {
-  it('远程加载根数据', done => {
+  it('远程加载根数据', () => new Promise<void>(done => {
     const wrapper = mount(VTree as any, {
       propsData: {
         load: asyncLoadData
@@ -479,9 +480,9 @@ describe('树远程测试', () => {
 
       done()
     }, 200)
-  })
+  }))
 
-  it('远程加载节点数据', done => {
+  it('远程加载节点数据', () => new Promise<void>(done => {
     const wrapper = mount(VTree as any, {
       propsData: {
         load: asyncLoadData
@@ -513,11 +514,11 @@ describe('树远程测试', () => {
         }, 200)
       })
     }, 200)
-  })
+  }))
 })
 
 describe('节点拖拽测试', () => {
-  it('拖拽数据正确性', done => {
+  it('拖拽数据正确性', () => new Promise<void>(done => {
     const data = genData({ inOrder: true }).data
     const wrapper = mount(VTree as any, {
       propsData: {
@@ -612,11 +613,11 @@ describe('节点拖拽测试', () => {
         })
       })
     })
-  })
+  }))
 })
 
 describe('节点鼠标事件', () => {
-  it('点击、双击与右键', done => {
+  it('点击、双击与右键', () => new Promise<void>(done => {
     const data = genData().data
     const wrapper = mount(VTree as any, {
       propsData: {
@@ -641,5 +642,5 @@ describe('节点鼠标事件', () => {
         done()
       })
     })
-  })
+  }))
 })

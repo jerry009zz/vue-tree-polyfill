@@ -1,6 +1,6 @@
 import { VNode } from 'vue';
 import { TreeNode } from '../store';
-import { ignoreEnum, dragHoverPartEnum } from '../const';
+import { ignoreEnum, dragHoverPartEnum } from '../constants';
 import { TreeNodeKeyType, IgnoreType, AnyPropsArrayType, LoadFn } from '../types';
 import { FilterFunctionType } from '../store/tree-store';
 export interface TreeProps {
@@ -108,7 +108,6 @@ export declare const DEFAULT_TREE_PROPS: {
     renderNodeAmount: number;
     bufferNodeAmount: number;
 };
-export declare const TREE_EVENTS: string[];
 declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToOption<TreeProps>, {
     data: () => never[];
     unloadDataList: () => never[];
@@ -149,8 +148,8 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     setExpand: (key: TreeNodeKeyType, value: boolean, expandParent?: boolean) => void;
     setExpandKeys: (keys: TreeNodeKeyType[], value: boolean) => void;
     setExpandAll: (value: boolean) => void;
-    getCheckedNodes: (ignoreMode?: "children" | "none" | "parents" | undefined) => TreeNode[];
-    getCheckedKeys: (ignoreMode?: "children" | "none" | "parents" | undefined) => TreeNodeKeyType[];
+    getCheckedNodes: (ignoreMode?: "none" | "parents" | "children" | undefined) => TreeNode[];
+    getCheckedKeys: (ignoreMode?: "none" | "parents" | "children" | undefined) => TreeNodeKeyType[];
     getIndeterminateNodes: () => TreeNode[];
     getSelectedNode: () => TreeNode | null;
     getSelectedKey: () => TreeNodeKeyType | null;
@@ -203,12 +202,11 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     bufferNodeAmount: number;
 }>>>, {
     keyField: string;
-    ignoreMode: "children" | "none" | "parents";
+    ignoreMode: "none" | "parents" | "children";
     filteredNodeCheckable: boolean;
     cascade: boolean;
     defaultExpandAll: boolean;
     expandOnFilter: boolean;
-    data: AnyPropsArrayType;
     titleField: string;
     checkable: boolean;
     selectable: boolean;
@@ -216,6 +214,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     disableAll: boolean;
     draggable: boolean;
     droppable: boolean;
+    data: AnyPropsArrayType;
     emptyText: string;
     separator: string;
     showUnloadCheckedNodes: boolean;

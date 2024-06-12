@@ -99,8 +99,6 @@ export const DEFAULT_TREE_SEARCH_PROPS = {
   searchRemote: false,
   searchDebounceTime: 300,
 }
-
-export const TREE_SEARCH_EVENTS = ['search', ...TREE_EVENTS]
 </script>
 
 <script setup lang="ts">
@@ -110,11 +108,12 @@ import {
   computed,
   onMounted,
 } from 'vue'
-import CTree, { DEFAULT_TREE_PROPS, TREE_EVENTS, TreeProps } from './Tree.vue'
+import CTree, { DEFAULT_TREE_PROPS, TreeProps } from './Tree.vue'
 import { useTreeSearchCls } from '../hooks/useTreeSearchCls'
 import { TreeNode } from '..'
 import { getCtreeMethods } from '../utils'
-import { TREE_API_METHODS } from '../const'
+import { TREE_API_METHODS } from '../constants'
+import { TREE_EVENTS, TREE_SEARCH_EVENTS } from '../constants/events'
 
 const props = withDefaults(defineProps<TreeSearchProps>(), DEFAULT_TREE_SEARCH_PROPS)
 

@@ -1,6 +1,6 @@
 import { TreeSearchProps } from './TreeSearch.vue';
 import { TreeNode } from '../store';
-import { placementEnum } from '../const';
+import { placementEnum } from '../constants';
 import { TreeNodeKeyType, PlacementType } from '../types';
 export type TreeDropProps = TreeSearchProps & {
     /** 下拉内容高度 */
@@ -57,7 +57,7 @@ export declare const DEFAULT_TREE_DROP_PROPS: {
     draggable: boolean;
     droppable: boolean;
     beforeDropMethod: () => () => boolean;
-    ignoreMode: import("../const").ignoreEnum;
+    ignoreMode: import("../constants").ignoreEnum;
     autoLoad: boolean;
     expandOnFilter: boolean;
     unselectOnClick: boolean;
@@ -67,7 +67,6 @@ export declare const DEFAULT_TREE_DROP_PROPS: {
     renderNodeAmount: number;
     bufferNodeAmount: number;
 };
-export declare const TREE_DROP_EVENTS: string[];
 declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToOption<TreeDropProps>, {
     dropHeight: number;
     dropDisabled: boolean;
@@ -103,7 +102,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     draggable: boolean;
     droppable: boolean;
     beforeDropMethod: () => () => boolean;
-    ignoreMode: import("../const").ignoreEnum;
+    ignoreMode: import("../constants").ignoreEnum;
     autoLoad: boolean;
     expandOnFilter: boolean;
     unselectOnClick: boolean;
@@ -113,7 +112,6 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     renderNodeAmount: number;
     bufferNodeAmount: number;
 }>, {
-    filter: (keyword: string, filterMethod?: import("../store/tree-store.js").FilterFunctionType | undefined) => void;
     setData: (data: import("../types").AnyPropsArrayType) => void;
     setChecked: (key: TreeNodeKeyType, value: boolean) => void;
     setCheckedKeys: (keys: TreeNodeKeyType[], value: boolean) => void;
@@ -124,8 +122,8 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     setExpand: (key: TreeNodeKeyType, value: boolean, expandParent?: boolean) => void;
     setExpandKeys: (keys: TreeNodeKeyType[], value: boolean) => void;
     setExpandAll: (value: boolean) => void;
-    getCheckedNodes: (ignoreMode?: "children" | "none" | "parents" | undefined) => TreeNode[];
-    getCheckedKeys: (ignoreMode?: "children" | "none" | "parents" | undefined) => TreeNodeKeyType[];
+    getCheckedNodes: (ignoreMode?: "none" | "parents" | "children" | undefined) => TreeNode[];
+    getCheckedKeys: (ignoreMode?: "none" | "parents" | "children" | undefined) => TreeNodeKeyType[];
     getIndeterminateNodes: () => TreeNode[];
     getSelectedNode: () => TreeNode | null;
     getSelectedKey: () => TreeNodeKeyType | null;
@@ -141,6 +139,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     append: (insertedNode: TreeNodeKeyType | import("../store/tree-node.js").ITreeNodeOptions, parentKey: TreeNodeKeyType) => TreeNode | null;
     prepend: (insertedNode: TreeNodeKeyType | import("../store/tree-node.js").ITreeNodeOptions, parentKey: TreeNodeKeyType) => TreeNode | null;
     remove: (removedKey: TreeNodeKeyType) => TreeNode | null;
+    filter: (keyword: string, filterMethod?: import("../store/tree-store.js").FilterFunctionType | undefined) => void;
     showCheckedNodes: (showUnloadCheckedNodes?: boolean | undefined) => void;
     loadRootNodes: () => Promise<void>;
     scrollTo: (key: TreeNodeKeyType, verticalPosition?: number | "bottom" | "top" | "center") => void;
@@ -184,7 +183,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     draggable: boolean;
     droppable: boolean;
     beforeDropMethod: () => () => boolean;
-    ignoreMode: import("../const").ignoreEnum;
+    ignoreMode: import("../constants").ignoreEnum;
     autoLoad: boolean;
     expandOnFilter: boolean;
     unselectOnClick: boolean;
@@ -195,12 +194,11 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     bufferNodeAmount: number;
 }>>>, {
     keyField: string;
-    ignoreMode: "children" | "none" | "parents";
+    ignoreMode: "none" | "parents" | "children";
     filteredNodeCheckable: boolean;
     cascade: boolean;
     defaultExpandAll: boolean;
     expandOnFilter: boolean;
-    data: import("../types").AnyPropsArrayType;
     titleField: string;
     checkable: boolean;
     selectable: boolean;
@@ -208,6 +206,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     disableAll: boolean;
     draggable: boolean;
     droppable: boolean;
+    data: import("../types").AnyPropsArrayType;
     emptyText: string;
     separator: string;
     showUnloadCheckedNodes: boolean;
@@ -215,7 +214,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     enableLeafOnly: boolean;
     defaultExpandedKeys: TreeNodeKeyType[];
     expandedKeys: TreeNodeKeyType[];
-    beforeDropMethod: (dragKey: TreeNodeKeyType, dropKey: TreeNodeKeyType, hoverPart: import("../const").dragHoverPartEnum) => boolean;
+    beforeDropMethod: (dragKey: TreeNodeKeyType, dropKey: TreeNodeKeyType, hoverPart: import("../constants").dragHoverPartEnum) => boolean;
     autoLoad: boolean;
     loading: boolean;
     nodeIndent: number;

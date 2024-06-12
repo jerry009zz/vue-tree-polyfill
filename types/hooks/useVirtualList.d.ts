@@ -1,5 +1,5 @@
 import { INonReactiveData, TreeNodeKeyType } from "../types";
-import { VerticalPositionType } from "../const";
+import { VerticalPositionType } from "../constants";
 import { TreeProps } from "../components/Tree.vue";
 type IUseVirtualListProps = Required<Pick<TreeProps, 'renderNodeAmount' | 'nodeMinHeight' | 'bufferNodeAmount' | 'keyField'>>;
 export declare const useVirtualList: (nonReactive: INonReactiveData, props: IUseVirtualListProps) => {

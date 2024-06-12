@@ -195,8 +195,6 @@ export const DEFAULT_TREE_PROPS = {
   renderNodeAmount: 100,
   bufferNodeAmount: 20,
 }
-
-export const TREE_EVENTS = [...TREE_NODE_EVENTS, ...storeEvents]
 </script>
 
 <script setup lang="ts">
@@ -213,9 +211,8 @@ import LoadingIcon from './LoadingIcon.vue'
 import {
   ignoreEnum,
   dragHoverPartEnum,
-  TREE_NODE_EVENTS,
-  storeEvents
-} from '../const'
+} from '../constants'
+import { STORE_EVENTS, TREE_EVENTS, TREE_NODE_EVENTS } from '../constants/events'
 import { TreeNodeKeyType, INonReactiveData, IgnoreType, AnyPropsArrayType, LoadFn } from '../types'
 import { useTreeCls } from '../hooks/useTreeCls'
 import { useVirtualList } from '../hooks/useVirtualList'
@@ -261,7 +258,7 @@ let nonReactive = getInitialNonReactiveValues()
  * 转发 store 所触发的事件，通过 vue 组件触发事件可被其他组件监听
  */
  const attachStoreEvents = () => {
-  storeEvents.forEach(eventName => {
+  STORE_EVENTS.forEach(eventName => {
    nonReactive.store.on(eventName, (...args: any[]) => {
      emit(eventName, ...args)
    })

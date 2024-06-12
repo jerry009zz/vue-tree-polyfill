@@ -1,7 +1,7 @@
 import { ref } from "vue"
 import { TreeNode } from ".."
 import { INonReactiveData, TreeNodeKeyType } from "../types"
-import { VerticalPositionType, verticalPositionEnum } from "../const"
+import { VerticalPositionType, verticalPositionEnum } from "../constants"
 import { TreeProps } from "../components/Tree.vue"
 
 type IUseVirtualListProps = Required<Pick<TreeProps, 

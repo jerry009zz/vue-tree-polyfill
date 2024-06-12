@@ -1,5 +1,3 @@
-import { IEventNames } from "./store/tree-store"
-
 //#region ignoreMode
 export enum ignoreEnum {
   none = 'none',
@@ -72,28 +70,3 @@ export enum dragHoverPartEnum {
   after = 'after'
 }
 //#endregion Drag
-
-export const TREE_NODE_EVENTS = [
-  'expand',
-  'check',
-  'click',
-  'select',
-  'node-dblclick',
-  'node-right-click',
-  'node-dragstart',
-  'node-dragenter',
-  'node-dragover',
-  'node-dragleave',
-  'node-drop'
-]
-
-export const storeEvents: Array<keyof IEventNames> = [
-  'expand',
-  'select',
-  'unselect',
-  'selected-change',
-  'check',
-  'uncheck',
-  'checked-change',
-  'set-data'
-]

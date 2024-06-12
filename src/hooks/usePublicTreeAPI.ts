@@ -168,8 +168,8 @@ export const usePublicTreeAPI = (
           .indexOf(keyword.toLowerCase()) > -1
       )
     }
-    filterMethod = filterMethod || props.filterMethod || defaultFilterMethod
-    nonReactive.store.filter(keyword, filterMethod)
+    const finalFilterMethod = filterMethod || props.filterMethod || defaultFilterMethod
+    nonReactive.store.filter(keyword, finalFilterMethod)
   }
   /**
    * 展示已选节点
@@ -188,7 +188,7 @@ export const usePublicTreeAPI = (
       const unloadNodes: TreeNode[] = unloadKeys.map(key => {
         const queryList = props.unloadDataList.concat(checkedNodesCache)
         let title = key
-        queryList.some(query => {
+        queryList.some((query: any) => {
           if (
             query[props.keyField] === key &&
             query[props.titleField] != null

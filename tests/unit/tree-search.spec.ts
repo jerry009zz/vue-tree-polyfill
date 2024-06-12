@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest'
+
 import { shallowMount, mount } from '@vue/test-utils'
 import VTreeSearch from '../../src/components/TreeSearch.vue'
 import VTree from '../../src/components/Tree.vue'
@@ -46,7 +48,7 @@ const asyncLoadData = (
 //#endregion 通用方法
 
 describe('树搜索测试', () => {
-  it('本地搜索', done => {
+  it('本地搜索', () => new Promise<void>(done => {
     const data = genData({ inOrder: true }).data
     const wrapper = mount(VTreeSearch as any, {
       propsData: { data }
@@ -87,11 +89,11 @@ describe('树搜索测试', () => {
         }, 300)
       })
     }, 300)
-  })
+  }))
 })
 
 describe('树远程搜索增强测试包', () => {
-  it('远程搜索', done => {
+  it('远程搜索', () => new Promise<void>(done => {
     const times = [3, 2, 5]
     let index = 0
     const load = (
@@ -236,5 +238,5 @@ describe('树远程搜索增强测试包', () => {
         }, 320)
       })
     }, 15)
-  })
+  }))
 })

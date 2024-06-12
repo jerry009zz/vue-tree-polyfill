@@ -86,12 +86,6 @@ export const DEFAULT_TREE_DROP_PROPS = {
   transfer: false,
   dropdownWidthFixed: false,
 }
-
-export const TREE_DROP_EVENTS = [
-  'clear',
-  'dropdown-visible-change',
-  ...TREE_SEARCH_EVENTS,
-]
 </script>
 
 <script setup lang="ts">
@@ -103,9 +97,10 @@ import {
   watch,
   nextTick,
 } from 'vue'
-import CTreeSearch, { DEFAULT_TREE_SEARCH_PROPS, TREE_SEARCH_EVENTS, TreeSearchProps } from './TreeSearch.vue'
+import CTreeSearch, { DEFAULT_TREE_SEARCH_PROPS, TreeSearchProps } from './TreeSearch.vue'
 import { TreeNode } from '../store'
-import { TREE_SEARCH_API_METHODS, placementEnum } from '../const'
+import { TREE_SEARCH_API_METHODS, placementEnum } from '../constants'
+import { TREE_DROP_EVENTS, TREE_SEARCH_EVENTS } from '../constants/events'
 import { TreeNodeKeyType, TreeDropSlotProps, PlacementType } from '../types'
 import { getCtreeMethods } from '../utils'
 import { useTreeDropCls } from '../hooks/useTreeDropCls'
