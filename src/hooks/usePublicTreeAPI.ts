@@ -212,7 +212,7 @@ export const usePublicTreeAPI = (
         )
       })
       unloadCheckedNodes.value = unloadNodes as TreeNode[]
-      nonReactive.blockNodes.push(...unloadNodes)
+      nonReactive.blockNodes = nonReactive.blockNodes.concat(unloadNodes)
       updateBlockData()
       updateRender()
     }

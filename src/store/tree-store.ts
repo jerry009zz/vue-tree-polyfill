@@ -80,6 +80,15 @@ export default class TreeStore {
 
   constructor(private readonly options: ITreeStoreOptions) {}
 
+  /**
+   * Use this function to insert nodes into flatData to avoid 'maximun call stack size exceeded' error
+   * @param insertIndex The index to insert, the same usage as `this.flatData.splice(insertIndex, 0, insertNodes)`
+   * @param insertNodes Tree nodes to insert
+   */
+  private insertIntoFlatData(insertIndex: number, insertNodes: TreeNode[]) {
+    this.flatData = this.flatData.slice(0, insertIndex).concat(insertNodes, this.flatData.slice(insertIndex))
+  }
+
   setData(
     data: ITreeNodeOptions[],
     selectableUnloadKey: TreeNodeKeyType | null = null,
@@ -437,7 +446,7 @@ export default class TreeStore {
                   node.children,
                   this.getSelectedKey === null
                 )
-                this.flatData.splice(parentIndex + 1, 0, ...flattenChildren)
+                this.insertIntoFlatData(parentIndex + 1, flattenChildren)
                 // 如果有未加载的选中节点，判断其是否已加载
                 this.setUnloadCheckedKeys(currentCheckedKeys)
                 if (this.unloadSelectedKey !== null) {
@@ -451,8 +460,7 @@ export default class TreeStore {
               if (!(e instanceof Error)) {
                 err = new Error(e)
               }
-              // tslint:disable-next-line: no-console
-              // console.error(err)
+              console.error('[VTree] load tree nodes error.', err)
             })
             .then(() => {
               node._loading = false
@@ -471,10 +479,10 @@ export default class TreeStore {
 
       node.expand = value
       // Set children visibility
-      const queue = [...node.children]
+      let queue = node.children.concat()
       while (queue.length) {
         if (queue[0].expand && queue[0].children.length) {
-          queue.push(...queue[0].children)
+          queue = queue.concat(queue[0].children)
         }
         if (queue[0]._filterVisible === false) {
           queue[0].visible = false
@@ -889,7 +897,7 @@ export default class TreeStore {
           ? childNode._parent._level + 1
           : 0)
     )
-    this.flatData.splice(flatIndex, 0, ...nodes)
+    this.insertIntoFlatData(flatIndex, nodes)
 
     // 更新被移除处父节点状态
     this.updateMovingNodeStatus(node)
