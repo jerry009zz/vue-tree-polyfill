@@ -1,6 +1,7 @@
 import TreeNode, { ITreeNodeOptions } from './tree-node'
 import { ignoreEnum } from '../constants'
 import { TreeNodeKeyType, IgnoreType } from '../types'
+import TreeEventTarget from './tree-event-target'
 
 //#region Interfaces
 
@@ -20,39 +21,11 @@ interface IMapData {
   [key: number]: TreeNode
 }
 
-interface IListenersMap {
-  [eventName: string]: Function[]
-}
-
-export interface IEventNames {
-  'set-data': () => void
-  'visible-data-change': () => void
-  'render-data-change': () => void
-  expand: NodeGeneralListenerType
-  select: NodeGeneralListenerType
-  unselect: NodeGeneralListenerType
-  'selected-change': (
-    node: TreeNode | null,
-    key: TreeNodeKeyType | null
-  ) => void
-  check: NodeGeneralListenerType
-  uncheck: NodeGeneralListenerType
-  'checked-change': (nodes: TreeNode[], keys: TreeNodeKeyType[]) => void
-}
-
 //#endregion Interfaces
-
-//#region Types
-
-type NodeGeneralListenerType = (node: TreeNode) => void
-
-export type ListenerType<T extends keyof IEventNames> = IEventNames[T]
 
 export type FilterFunctionType = (keyword: string, node: TreeNode) => boolean
 
-//#endregion Types
-
-export default class TreeStore {
+export default class TreeStore extends TreeEventTarget {
   //#region Properties
 
   /** 树数据 */
@@ -73,12 +46,11 @@ export default class TreeStore {
   /** 当前单选选中节点 key */
   private currentSelectedKey: TreeNodeKeyType | null = null
 
-  /** 事件 listeners */
-  private listenersMap: IListenersMap = {}
-
   //#endregion Properties
 
-  constructor(private readonly options: ITreeStoreOptions) {}
+  constructor(private readonly options: ITreeStoreOptions) {
+    super()
+  }
 
   /**
    * Use this function to insert nodes into flatData to avoid 'maximun call stack size exceeded' error
@@ -481,17 +453,18 @@ export default class TreeStore {
       // Set children visibility
       let queue = node.children.concat()
       while (queue.length) {
-        if (queue[0].expand && queue[0].children.length) {
-          queue = queue.concat(queue[0].children)
+        const nodeFromQueue = queue.pop()
+        if (!nodeFromQueue) continue
+        if (nodeFromQueue.expand && nodeFromQueue.children.length) {
+          queue = nodeFromQueue.children.concat(queue)
         }
-        if (queue[0]._filterVisible === false) {
-          queue[0].visible = false
+        if (nodeFromQueue._filterVisible === false) {
+          nodeFromQueue.visible = false
         } else {
-          queue[0].visible =
-            queue[0]._parent === null ||
-            (queue[0]._parent.expand && queue[0]._parent.visible)
+          nodeFromQueue.visible =
+            nodeFromQueue._parent === null ||
+            (nodeFromQueue._parent.expand && nodeFromQueue._parent.visible)
         }
-        queue.shift()
       }
 
       if (triggerEvent) {
@@ -1173,58 +1146,4 @@ export default class TreeStore {
   }
 
   //#endregion Utils
-
-  //#region Mini EventTarget
-  on<T extends keyof IEventNames>(
-    eventName: T,
-    listener: ListenerType<T> | Array<ListenerType<T>>
-  ): void {
-    if (!this.listenersMap[eventName]) {
-      this.listenersMap[eventName] = []
-    }
-    let listeners: Array<ListenerType<T>> = []
-    if (!Array.isArray(listener)) {
-      listeners = [listener]
-    } else {
-      listeners = listener
-    }
-    listeners.forEach(listener => {
-      if (this.listenersMap[eventName].indexOf(listener) === -1) {
-        this.listenersMap[eventName].push(listener)
-      }
-    })
-  }
-
-  off<T extends keyof IEventNames>(
-    eventName: T,
-    listener?: ListenerType<T>
-  ): void {
-    if (!this.listenersMap[eventName]) return
-    if (!listener) {
-      this.listenersMap[eventName] = []
-    } else {
-      const index = this.listenersMap[eventName].indexOf(listener)
-      if (index > -1) {
-        this.listenersMap[eventName].splice(index, 1)
-      }
-    }
-  }
-
-  emit<T extends keyof IEventNames>(
-    eventName: T,
-    ...args: Parameters<IEventNames[T]>
-  ): void {
-    if (!this.listenersMap[eventName]) return
-    const length: number = this.listenersMap[eventName].length
-    for (let i: number = 0; i < length; i++) {
-      this.listenersMap[eventName][i](...args)
-    }
-  }
-
-  disposeListeners(): void {
-    for (const eventName in this.listenersMap) {
-      this.listenersMap[eventName] = []
-    }
-  }
-  //#endregion Mini EventTarget
 }

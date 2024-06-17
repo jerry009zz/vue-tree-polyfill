@@ -1,4 +1,5 @@
-import { IEventNames } from "../store/tree-store"
+import { IEventNames } from "../store/tree-event-target"
+
 
 export const TREE_NODE_EVENTS = [
   'expand',
