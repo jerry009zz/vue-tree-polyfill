@@ -15,6 +15,7 @@
           :key="node[keyField]"
           :data="node"
           :getNode="getNode"
+          :noSiblingNodeMap="noSiblingNodeMap"
           v-on="treeNodeListeners"
           :class="
             typeof nodeClassName === 'function'
@@ -23,7 +24,6 @@
           "
           :style="{
             minHeight: `${nodeMinHeight}px`,
-            paddingLeft: `${node._level * nodeIndent}px`
           }"
           @check="handleNodeCheck"
           @select="handleNodeSelect"
@@ -150,6 +150,8 @@ export interface TreeProps {
   /** 节点根元素的 class ，传入函数以对每个节点定制 class */
   nodeClassName?: string | object | Array<string | object> | ((node: TreeNode) => string | object | Array<string | object>),
 
+  /** 连接线 */
+  showLine?: boolean | ShowLine
 
   /** 子节点缩进 */
   nodeIndent?: number,
@@ -204,6 +206,9 @@ import {
   watch,
   onMounted,
   onBeforeUnmount,
+  computed,
+  reactive,
+  toRefs,
 } from 'vue'
 import TreeStore, { TreeNode } from '../store'
 import CTreeNode from './TreeNode.vue'
@@ -213,7 +218,7 @@ import {
   dragHoverPartEnum,
 } from '../constants'
 import { STORE_EVENTS, TREE_EVENTS, TREE_NODE_EVENTS } from '../constants/events'
-import { TreeNodeKeyType, INonReactiveData, IgnoreType, AnyPropsArrayType, LoadFn } from '../types'
+import { TreeNodeKeyType, INonReactiveData, IgnoreType, AnyPropsArrayType, LoadFn, ShowLine } from '../types'
 import { useTreeCls } from '../hooks/useTreeCls'
 import { useVirtualList } from '../hooks/useVirtualList'
 import { useIframeResize } from '../hooks/useIframeResize'
@@ -340,6 +345,43 @@ const {
   updateExpandedKeys,
   updateBlockData,
   updateRender,
+})
+
+const noSiblingNodeMap = computed(() => {
+  const parentsOfFirstNode: TreeNode[] = []
+  let nodeParent = renderNodes.value[0]?._parent
+
+  while (nodeParent) {
+    parentsOfFirstNode.push(nodeParent)
+    nodeParent = nodeParent._parent
+  }
+
+  const nodesToIterate = parentsOfFirstNode.concat(renderNodes.value)
+
+  const map: Record<string, true> = {}
+  const stack: TreeNode[] = []
+  nodesToIterate.forEach((renderNode) => {
+    const currentNodeLevel = renderNode._level
+    let length = stack.length
+    while (length) {
+      const stackNode = stack[length - 1]
+      const stackNodeLevel = stackNode._level
+      if (stackNodeLevel > currentNodeLevel) {
+        map[stackNode[props.keyField]] = true
+        stack.pop()
+      } else if (stackNodeLevel === currentNodeLevel) {
+        stack.pop()
+        break
+      } else break
+      length--
+    }
+    stack.push(renderNode)
+  })
+  stack.forEach((node) => {
+    map[node[props.keyField]] = true
+  })
+
+  return map
 })
 
 type VModelType = TreeNodeKeyType | TreeNodeKeyType[]
@@ -555,9 +597,11 @@ const treeNodePropKeys = [
   'draggable',
   'droppable',
   'render',
+  'nodeIndent',
+  'showLine',
 ] as const
 
-const treeNodeProps = pickReadonly(props, ...treeNodePropKeys)
+const treeNodeProps = reactive(pickReadonly(toRefs(props), ...treeNodePropKeys))
 
 defineExpose({
   setData,

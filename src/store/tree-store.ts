@@ -1004,7 +1004,7 @@ export default class TreeStore extends TreeEventTarget {
       const key: TreeNodeKeyType = node[this.options.keyField]
       result.push(node)
       if (this.mapData[key]) {
-        throw new Error('[CTree] Duplicate tree node key.')
+        throw new Error('[VTree] Duplicate tree node key.')
       }
       this.mapData[key] = node
 

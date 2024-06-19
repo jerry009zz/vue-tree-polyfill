@@ -70,3 +70,9 @@ export enum dragHoverPartEnum {
   after = 'after'
 }
 //#endregion Drag
+
+export enum showLineType {
+  // dotted = 'dotted',
+  dashed = 'dashed',
+  solid = 'solid',
+}

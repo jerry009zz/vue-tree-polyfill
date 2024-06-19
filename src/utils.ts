@@ -20,11 +20,11 @@ export const pickReadonly = <T extends object, K extends keyof T>(
   obj: Readonly<T>,
   ...keys: K[]
 ): PickReadonly<T, K> => {
-  const picked: Partial<PickReadonly<T, K>> = {};
+  const picked: Partial<PickReadonly<T, K>> = {}
   keys.forEach(key => {
     if (obj.hasOwnProperty(key)) {
-      picked[key] = obj[key];
+      picked[key] = obj[key]
     }
-  });
-  return picked as PickReadonly<T, K>;
+  })
+  return picked as PickReadonly<T, K>
 }

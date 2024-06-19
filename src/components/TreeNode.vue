@@ -1,36 +1,63 @@
 <template>
-  <div :class="wrapperCls">
-    <div :class="dropBeforeCls"></div>
-    <div ref="nodeBody" :class="nodeBodyCls" v-on="dropListeners">
-      <!-- 展开按钮 -->
-      <div :class="expandCls">
-        <!-- 外层用于占位，icon 用于点击 -->
-        <i
-          v-show="!data?.isLeaf && !data?._loading"
-          @click="handleExpand"
-        ></i>
-        <LoadingIcon v-if="data?._loading" :class="loadingIconCls" />
-      </div>
+  <div :class="indentWrapperCls">
+    <template v-if="showLine">
+      <template v-for="(level, index) in data._level" :key="level">
+        <svg
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          :style="{
+            alignSelf: 'stretch',
+            width: `${nodeIndent}px`,
+          }"
+        >
+          <polyline
+            fill="none"
+            :points="polylinePoints(index === data._level - 1)"
+            :stroke-width="strokeWidth"
+            :stroke="showLineParams.color"
+            :stroke-dasharray="strokeDasharray"
+          />
+        </svg>
+      </template>
+    </template>
+    <div
+      :class="wrapperCls"
+      :style="{
+        paddingLeft: showLine ? 'none' : `${data._level * nodeIndent}px`,
+      }"
+    >
+      <div :class="dropBeforeCls"></div>
+      <div ref="nodeBody" :class="nodeBodyCls" v-on="dropListeners">
+        <!-- 展开按钮 -->
+        <div :class="expandCls">
+          <!-- 外层用于占位，icon 用于点击 -->
+          <i
+            v-show="!data?.isLeaf && !data?._loading"
+            @click="handleExpand"
+          ></i>
+          <LoadingIcon v-if="data?._loading" :class="loadingIconCls" />
+        </div>
 
-      <!-- 复选框 -->
-      <div v-if="showCheckbox" :class="checkboxWrapperCls">
-        <div :class="checkboxCls" @click="handleCheck"></div>
-      </div>
+        <!-- 复选框 -->
+        <div v-if="showCheckbox" :class="checkboxWrapperCls">
+          <div :class="checkboxCls" @click="handleCheck"></div>
+        </div>
 
-      <!-- 标题 -->
-      <div
-        :class="titleCls"
-        @click="handleSelect"
-        @dblclick="handleDblclick"
-        @contextmenu="handleRightClick"
-        v-on="dragListeners"
-        :draggable="draggable && !disableAll && !data?.disabled"
-      >
-        <component v-if="renderFunction" :is="renderComponent"></component>
-        <template v-else>{{ data ? data[titleField] : '' }}</template>
+        <!-- 标题 -->
+        <div
+          :class="titleCls"
+          @click="handleSelect"
+          @dblclick="handleDblclick"
+          @contextmenu="handleRightClick"
+          v-on="dragListeners"
+          :draggable="draggable && !disableAll && !data?.disabled"
+        >
+          <component v-if="renderFunction" :is="renderComponent"></component>
+          <template v-else>{{ data ? data[titleField] : '' }}</template>
+        </div>
       </div>
+      <div :class="dropAfterCls"></div>
     </div>
-    <div :class="dropAfterCls"></div>
   </div>
 </template>
 
@@ -43,12 +70,14 @@ type PickedProps = Required<Pick<TreeProps,
   'unselectOnClick' |
   'disableAll' |
   'draggable' |
-  'droppable'
->> & Pick<TreeProps, 'render'>
+  'droppable' |
+  'nodeIndent'
+>> & Pick<TreeProps, 'render' | 'showLine'>
 
 export type TreeNodeProps = PickedProps & {
   data: TreeNode,
-  getNode?: GetNodeFn,
+  getNode: GetNodeFn,
+  noSiblingNodeMap: Record<string, true>,
 }
 </script>
 
@@ -59,14 +88,15 @@ import {
   computed,
   getCurrentInstance,
   h,
+  toRef,
 } from 'vue'
 import { TreeNode } from '../store'
 import LoadingIcon from './LoadingIcon.vue'
-import { dragHoverPartEnum } from '../constants'
+import { dragHoverPartEnum, showLineType } from '../constants'
 import { TREE_NODE_EVENTS } from '../constants/events'
 import { useTreeNodeCls } from '../hooks/useTreeNodeCls'
 import { TreeProps } from './Tree.vue'
-import { GetNodeFn } from '../types'
+import { GetNodeFn, ShowLine } from '../types'
 
 const props = defineProps<TreeNodeProps>()
 
@@ -75,10 +105,47 @@ const emit = defineEmits([...TREE_NODE_EVENTS])
 const dragoverBody = ref(false)
 const dragoverBefore = ref(false)
 const dragoverAfter = ref(false)
-const keyField = props.keyField as string
-const getNode = props.getNode as Function
+
+const showLineParams = computed(() => {
+  const defaultParams: Required<ShowLine> = {
+    width: 1,
+    type: showLineType.solid,
+    color: '#D3D3D3',
+    polyline: false,
+  }
+  let params: Required<ShowLine> = defaultParams
+  if (typeof props.showLine === 'object') {
+    params = {
+      width: props.showLine.width ?? defaultParams.width,
+      type: props.showLine.type ?? defaultParams.type,
+      color: props.showLine.color ?? defaultParams.color,
+      polyline: props.showLine.polyline ?? defaultParams.polyline,
+    }
+  }
+  return params
+})
+
+const strokeWidth = computed(() => showLineParams.value.width * 100 / props.nodeIndent)
+
+const strokeDasharray = computed(() => {
+  switch (showLineParams.value.type) {
+    case showLineType.dashed:
+      return '25'
+    default:
+      break
+  }
+  return 'none'
+})
+
+const polylinePoints = (isDirectParentLine: boolean) => {
+  if (!showLineParams.value.polyline || !isDirectParentLine) return '50,0 50,100'
+  const parent = props.getNode(props.data[props.keyField])?._parent
+  if (parent && props.noSiblingNodeMap[parent[props.keyField]] && props.noSiblingNodeMap[props.data[props.keyField]]) return '50,0 50,50 100,50 50,50'
+  return '50,0 50,50 100,50 50,50 50,100'
+}
 
 const {
+  indentWrapperCls,
   wrapperCls,
   nodeBodyCls,
   dropBeforeCls,
@@ -96,7 +163,7 @@ const {
 
 const fullData = computed(() => {
   return (
-    getNode(props.data ? props.data[keyField] : '') ||
+    props.getNode(props.data ? props.data[props.keyField] : '') ||
     props.data ||
     ({} as TreeNode)
   )

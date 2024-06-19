@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="tree">
-      <VTree ref="tree" :data="treeData" checkable selectable></VTree>
+      <VTree ref="tree" :data="treeData" checkable selectable :showLine="{ polyline: true }"></VTree>
     </div>
     <div class="control">
       <div class="desc-block">

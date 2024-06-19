@@ -16,6 +16,11 @@ export const useTreeNodeCls = (props: TreeNodeProps, dragoverRefs: {
     dragoverAfter,
   } = dragoverRefs
 
+  const indentWrapperCls = computed(() => {
+    return [
+      `${prefixCls}__indent-wrapper`,
+    ]
+  })
   const wrapperCls = computed(() => {
     return [
       `${prefixCls}__wrapper`,
@@ -101,6 +106,7 @@ export const useTreeNodeCls = (props: TreeNodeProps, dragoverRefs: {
   })
 
   return {
+    indentWrapperCls,
     wrapperCls,
     nodeBodyCls,
     dropBeforeCls,
