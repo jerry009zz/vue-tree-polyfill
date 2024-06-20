@@ -46,6 +46,12 @@ export default class TreeStore {
     /** 事件 listeners */
     private listenersMap;
     constructor(options: ITreeStoreOptions);
+    /**
+     * Use this function to insert nodes into flatData to avoid 'maximun call stack size exceeded' error
+     * @param insertIndex The index to insert, the same usage as `this.flatData.splice(insertIndex, 0, insertNodes)`
+     * @param insertNodes Tree nodes to insert
+     */
+    private insertIntoFlatData;
     setData(data: ITreeNodeOptions[], selectableUnloadKey?: TreeNodeKeyType | null, checkableUnloadKeys?: TreeNodeKeyType[] | null): void;
     /**
      * 设置单个节点多选选中

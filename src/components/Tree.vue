@@ -659,7 +659,7 @@ export default defineComponent({
           )
         })
         unloadCheckedNodes = unloadNodes as TreeNode[]
-        nonReactive.blockNodes.push(...unloadNodes)
+        nonReactive.blockNodes = nonReactive.blockNodes.concat(unloadNodes)
         updateBlockData()
         updateRender()
       }
