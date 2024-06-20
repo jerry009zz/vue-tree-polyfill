@@ -124,17 +124,17 @@ describe('树展示测试', () => {
 
     vm.$nextTick(() => {
       let treeNodes: any[] = wrapper.findAllComponents({
-        name: 'CTreeNode'
+        name: 'VTreeNode'
       }) as any[]
       // 展开 124 节点
-      treeNodes.slice(4, 5)[0].find('.ctree-tree-node__title').trigger('click')
+      treeNodes.slice(4, 5)[0].find('.vtree-tree-node__title').trigger('click')
 
       vm.filter('126')
 
       expect((vm as any).nonReactive.blockNodes.length).toBe(2)
-      treeNodes = wrapper.findAllComponents({ name: 'CTreeNode' }) as any[]
+      treeNodes = wrapper.findAllComponents({ name: 'VTreeNode' }) as any[]
       // 展开搜索后的 125 节点
-      treeNodes.slice(1, 2)[0].find('.ctree-tree-node__title').trigger('click')
+      treeNodes.slice(1, 2)[0].find('.vtree-tree-node__title').trigger('click')
 
       expect((vm as any).nonReactive.blockNodes.length).toBe(2)
 
@@ -160,23 +160,23 @@ describe('树展示测试', () => {
 
     vm.$nextTick(() => {
       const treeNodes: any[] = wrapper.findAllComponents({
-        name: 'CTreeNode'
+        name: 'VTreeNode'
       }) as any[]
 
       expect(
-        treeNodes[0].find('.ctree-tree-node__checkbox_checked').exists()
+        treeNodes[0].find('.vtree-tree-node__checkbox_checked').exists()
       ).toBe(true)
       expect(
-        treeNodes[1].find('.ctree-tree-node__checkbox_indeterminate').exists()
+        treeNodes[1].find('.vtree-tree-node__checkbox_indeterminate').exists()
       ).toBe(true)
       expect(
-        treeNodes[2].find('.ctree-tree-node__title_selected').exists()
+        treeNodes[2].find('.vtree-tree-node__title_selected').exists()
       ).toBe(true)
       expect(
-        treeNodes[3].find('.ctree-tree-node__checkbox_disabled').exists()
+        treeNodes[3].find('.vtree-tree-node__checkbox_disabled').exists()
       ).toBe(true)
       expect(
-        treeNodes[4].find('.ctree-tree-node__expand_active').exists()
+        treeNodes[4].find('.vtree-tree-node__expand_active').exists()
       ).toBe(true)
 
       done()
@@ -194,12 +194,12 @@ describe('树展示测试', () => {
 
     vm.$nextTick(() => {
       const treeNodes: any[] = wrapper.findAllComponents({
-        name: 'CTreeNode'
+        name: 'VTreeNode'
       }) as any[]
 
-      const node = treeNodes[0].find('.ctree-tree-node__expand')
+      const node = treeNodes[0].find('.vtree-tree-node__expand')
 
-      treeNodes[0].find('.ctree-tree-node__expand i').trigger('click')
+      treeNodes[0].find('.vtree-tree-node__expand i').trigger('click')
 
       vm.$nextTick(() => {
         expect(wrapper.emitted('expand')).toHaveLength(1)
@@ -264,22 +264,22 @@ describe('树单选测试', () => {
     const vm = wrapper.vm
 
     vm.$nextTick(() => {
-      const treeNodes: any[] = wrapper.findAllComponents({ name: 'CTreeNode' })
+      const treeNodes: any[] = wrapper.findAllComponents({ name: 'VTreeNode' })
 
       expect((vm as any).nonReactive.store.data[0].selected).toBe(true)
       expect(
-        treeNodes[0].find('.ctree-tree-node__title_selected').exists()
+        treeNodes[0].find('.vtree-tree-node__title_selected').exists()
       ).toBe(true)
 
-      treeNodes[2].find('.ctree-tree-node__title').trigger('click')
+      treeNodes[2].find('.vtree-tree-node__title').trigger('click')
       vm.$nextTick(() => {
         expect((vm as any).nonReactive.store.data[0].selected).toBe(false)
         expect(
-          treeNodes[0].find('.ctree-tree-node__title_selected').exists()
+          treeNodes[0].find('.vtree-tree-node__title_selected').exists()
         ).toBe(false)
         expect((vm as any).nonReactive.store.data[2].selected).toBe(true)
         expect(
-          treeNodes[2].find('.ctree-tree-node__title_selected').exists()
+          treeNodes[2].find('.vtree-tree-node__title_selected').exists()
         ).toBe(true)
         expect(wrapper.emitted('select')).toHaveLength(1)
         done()
@@ -389,18 +389,18 @@ describe('树多选测试', () => {
 
     vm.$nextTick(() => {
       const treeNodes: any[] = wrapper.findAllComponents({
-        name: 'CTreeNode'
+        name: 'VTreeNode'
       }) as any[]
 
       expect((vm as any).nonReactive.store.data[0].checked).toBe(true)
       expect(
-        treeNodes[0].find('.ctree-tree-node__checkbox_checked').exists()
+        treeNodes[0].find('.vtree-tree-node__checkbox_checked').exists()
       ).toBe(true)
-      treeNodes[2].find('.ctree-tree-node__title').trigger('click')
+      treeNodes[2].find('.vtree-tree-node__title').trigger('click')
       vm.$nextTick(() => {
         expect((vm as any).nonReactive.store.data[2].checked).toBe(true)
         expect(
-          treeNodes[2].find('.ctree-tree-node__checkbox_checked').exists()
+          treeNodes[2].find('.vtree-tree-node__checkbox_checked').exists()
         ).toBe(true)
         modelValue = (vm as any).getCheckedKeys()
         let expectedCheck = flatten(data[0])
@@ -436,11 +436,11 @@ describe('树多选测试', () => {
       modelValue = (vm as any).getCheckedKeys()
 
       const treeNodes: any[] = wrapper.findAllComponents({
-        name: 'CTreeNode'
+        name: 'VTreeNode'
       }) as any[]
 
-      treeNodes[1].find('.ctree-tree-node__checkbox').trigger('click')
-      treeNodes[1].find('.ctree-tree-node__title').trigger('click')
+      treeNodes[1].find('.vtree-tree-node__checkbox').trigger('click')
+      treeNodes[1].find('.vtree-tree-node__title').trigger('click')
       vm.$nextTick(() => {
         modelValue = (vm as any).getCheckedKeys()
 
@@ -495,10 +495,10 @@ describe('树远程测试', () => {
       expect((vm as any).nonReactive.blockNodes.length).toBe(5)
 
       const treeNodes: any[] = wrapper.findAllComponents({
-        name: 'CTreeNode'
+        name: 'VTreeNode'
       }) as any[]
 
-      treeNodes[0].find('.ctree-tree-node__expand i').trigger('click')
+      treeNodes[0].find('.vtree-tree-node__expand i').trigger('click')
       vm.$nextTick(() => {
         setTimeout(() => {
           expect((vm as any).nonReactive.store.flatData.length).toBe(7)
@@ -532,7 +532,7 @@ describe('节点拖拽测试', () => {
 
     vm.$nextTick(() => {
       let treeNodes: any[] = wrapper.findAllComponents({
-        name: 'CTreeNode'
+        name: 'VTreeNode'
       }) as any[]
 
       const dataTransfer = {
@@ -557,10 +557,10 @@ describe('节点拖拽测试', () => {
 
       // insertAfter
       treeNodes[2]
-        .find('.ctree-tree-node__title')
+        .find('.vtree-tree-node__title')
         .trigger('dragstart', { dataTransfer })
       treeNodes[3]
-        .find('.ctree-tree-node__node-body')
+        .find('.vtree-tree-node__node-body')
         .trigger('drop', { dataTransfer, clientY: 25 })
       vm.$nextTick(() => {
         expect(
@@ -569,12 +569,12 @@ describe('节点拖拽测试', () => {
           )
         ).toEqual([3, 2, 4, 5, 6])
         // insertAfter
-        treeNodes = wrapper.findAllComponents({ name: 'CTreeNode' }) as any[]
+        treeNodes = wrapper.findAllComponents({ name: 'VTreeNode' }) as any[]
         treeNodes[2]
-          .find('.ctree-tree-node__title')
+          .find('.vtree-tree-node__title')
           .trigger('dragstart', { dataTransfer })
         treeNodes[4]
-          .find('.ctree-tree-node__node-body')
+          .find('.vtree-tree-node__node-body')
           .trigger('drop', { dataTransfer, clientY: 25 })
         vm.$nextTick(() => {
           expect(
@@ -584,12 +584,12 @@ describe('节点拖拽测试', () => {
           ).toEqual([2, 4, 3, 5, 6])
 
           // insertBefore
-          treeNodes = wrapper.findAllComponents({ name: 'CTreeNode' }) as any[]
+          treeNodes = wrapper.findAllComponents({ name: 'VTreeNode' }) as any[]
           treeNodes[2]
-            .find('.ctree-tree-node__title')
+            .find('.vtree-tree-node__title')
             .trigger('dragstart', { dataTransfer })
           treeNodes[4]
-            .find('.ctree-tree-node__node-body')
+            .find('.vtree-tree-node__node-body')
             .trigger('drop', { dataTransfer, clientY: 0 })
           vm.$nextTick(() => {
             expect(
@@ -627,11 +627,11 @@ describe('节点鼠标事件', () => {
     const vm = wrapper.vm
 
     vm.$nextTick(() => {
-      const treeNodes: any[] = wrapper.findAllComponents({ name: 'CTreeNode' })
+      const treeNodes: any[] = wrapper.findAllComponents({ name: 'VTreeNode' })
 
-      treeNodes[0].find('.ctree-tree-node__title').trigger('click')
-      treeNodes[0].find('.ctree-tree-node__title').trigger('dblclick')
-      treeNodes[0].find('.ctree-tree-node__title').trigger('contextmenu')
+      treeNodes[0].find('.vtree-tree-node__title').trigger('click')
+      treeNodes[0].find('.vtree-tree-node__title').trigger('dblclick')
+      treeNodes[0].find('.vtree-tree-node__title').trigger('contextmenu')
       vm.$nextTick(() => {
         expect(wrapper.emitted('click')).toHaveLength(1)
         expect((wrapper.emitted('click')?.[0] as any)?.[1]).toBeInstanceOf(MouseEvent)

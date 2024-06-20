@@ -20,7 +20,7 @@
     </div>
 
     <!-- 下拉框 -->
-    <transition name="ctree-dropdown">
+    <transition name="vtree-dropdown">
       <div
         ref="dropdownRef"
         v-show="dropdownVisible"
@@ -29,7 +29,7 @@
           height: `${dropHeight}px`
         }"
       >
-        <CTreeSearch
+        <VTreeSearch
           ref="treeSearchRef"
           v-bind="props"
           v-model="treeSearchValue"
@@ -41,7 +41,7 @@
           <template v-for="(_, slot) in $slots" v-slot:[slot]="scope">
             <slot :name="slot" v-bind="scope"></slot>
           </template>
-        </CTreeSearch>
+        </VTreeSearch>
       </div>
     </transition>
   </div>
@@ -97,12 +97,12 @@ import {
   watch,
   nextTick,
 } from 'vue'
-import CTreeSearch, { DEFAULT_TREE_SEARCH_PROPS, TreeSearchProps } from './TreeSearch.vue'
+import VTreeSearch, { DEFAULT_TREE_SEARCH_PROPS, TreeSearchProps } from './TreeSearch.vue'
 import { TreeNode } from '../store'
 import { TREE_SEARCH_API_METHODS, placementEnum } from '../constants'
 import { TREE_DROP_EVENTS, TREE_SEARCH_EVENTS } from '../constants/events'
 import { TreeNodeKeyType, TreeDropSlotProps, PlacementType } from '../types'
-import { getCtreeMethods } from '../utils'
+import { getVTreeMethods } from '../utils'
 import { useTreeDropCls } from '../hooks/useTreeDropCls'
 
 const props = withDefaults(defineProps<TreeDropProps>(), DEFAULT_TREE_DROP_PROPS)
@@ -143,7 +143,7 @@ const {
 
 const referenceRef = ref()
 const dropdownRef = ref()
-const treeSearchRef = ref<InstanceType<typeof CTreeSearch> | null>(null)
+const treeSearchRef = ref<InstanceType<typeof VTreeSearch> | null>(null)
 const slotProps = reactive<TreeDropSlotProps>({
   /** 多选选中的节点 */
   checkedNodes: [] as TreeNode[],
@@ -391,11 +391,11 @@ watch(
 //#endregion
 
 defineExpose({
-  ...getCtreeMethods(TREE_SEARCH_API_METHODS, treeSearchRef),
+  ...getVTreeMethods(TREE_SEARCH_API_METHODS, treeSearchRef),
 })
 
 defineOptions({
-  name: 'CTreeDrop',
+  name: 'VTreeDrop',
   inheritAttrs: false,
 })
 </script>

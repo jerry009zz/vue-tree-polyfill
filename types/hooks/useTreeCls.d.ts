@@ -1,4 +1,4 @@
-declare const prefixCls = "ctree-tree";
+declare const prefixCls = "vtree-tree";
 export { prefixCls as TREE_PREFIX_CLS };
 export declare const useTreeCls: () => {
     wrapperCls: import("vue").ComputedRef<string[]>;

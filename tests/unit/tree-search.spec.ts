@@ -56,7 +56,7 @@ describe('树搜索测试', () => {
     const vm = wrapper.vm
     const tree = wrapper.findComponent({ ref: 'treeRef' }).vm
 
-    const input = wrapper.find('.ctree-tree-search__input')
+    const input = wrapper.find('.vtree-tree-search__input')
     const inputElement = input.element as HTMLInputElement
     inputElement.value = '30'
     input.trigger('input')
@@ -126,7 +126,7 @@ describe('树远程搜索增强测试包', () => {
     const vm = wrapper.vm
     const treeWrapper = wrapper.findComponent({ ref: 'treeRef' }) as any
 
-    const input = wrapper.find('.ctree-tree-search__input')
+    const input = wrapper.find('.vtree-tree-search__input')
     const inputElement = input.element as HTMLInputElement
     inputElement.value = '30'
 

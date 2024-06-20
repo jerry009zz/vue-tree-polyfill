@@ -302,6 +302,6 @@ function handleDrop(e: DragEvent): void {
 }
 
 defineOptions({
-  name: 'CTreeNode',
+  name: 'VTreeNode',
 })
 </script>

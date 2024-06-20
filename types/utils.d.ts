@@ -1,5 +1,5 @@
 import { Ref } from "vue";
-export declare const getCtreeMethods: <T extends string, K extends Record<T, any>>(apiMethods: readonly T[], ref: Ref<K | null>) => Pick<K, T>;
+export declare const getVTreeMethods: <T extends string, K extends Record<T, any>>(apiMethods: readonly T[], ref: Ref<K | null>) => Pick<K, T>;
 type PickReadonly<T, K extends keyof T> = {
     readonly [P in K]: T[P];
 };

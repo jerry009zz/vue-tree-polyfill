@@ -2,7 +2,7 @@ import { Ref, computed } from 'vue'
 import { TREE_NODE_PREFIX_CLS as treeNodePrefixCls } from './useTreeNodeCls'
 import { TreeSearchProps } from '../components/TreeSearch.vue'
 
-const prefixCls = 'ctree-tree-search'
+const prefixCls = 'vtree-tree-search'
 
 export { prefixCls as TREE_SEARCH_PREFIX_CLS }
 

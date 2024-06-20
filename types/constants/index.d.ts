@@ -24,3 +24,7 @@ export declare enum dragHoverPartEnum {
     body = "body",
     after = "after"
 }
+export declare enum showLineType {
+    dashed = "dashed",
+    solid = "solid"
+}

@@ -1,5 +1,6 @@
 import TreeNode, { ITreeNodeOptions } from './tree-node';
 import { TreeNodeKeyType, IgnoreType } from '../types';
+import TreeEventTarget from './tree-event-target';
 interface ITreeStoreOptions {
     [key: string]: any;
     keyField: string;
@@ -14,22 +15,8 @@ interface IMapData {
     [key: string]: TreeNode;
     [key: number]: TreeNode;
 }
-export interface IEventNames {
-    'set-data': () => void;
-    'visible-data-change': () => void;
-    'render-data-change': () => void;
-    expand: NodeGeneralListenerType;
-    select: NodeGeneralListenerType;
-    unselect: NodeGeneralListenerType;
-    'selected-change': (node: TreeNode | null, key: TreeNodeKeyType | null) => void;
-    check: NodeGeneralListenerType;
-    uncheck: NodeGeneralListenerType;
-    'checked-change': (nodes: TreeNode[], keys: TreeNodeKeyType[]) => void;
-}
-type NodeGeneralListenerType = (node: TreeNode) => void;
-export type ListenerType<T extends keyof IEventNames> = IEventNames[T];
 export type FilterFunctionType = (keyword: string, node: TreeNode) => boolean;
-export default class TreeStore {
+export default class TreeStore extends TreeEventTarget {
     private readonly options;
     /** 树数据 */
     data: TreeNode[];
@@ -43,9 +30,13 @@ export default class TreeStore {
     private unloadSelectedKey;
     /** 当前单选选中节点 key */
     private currentSelectedKey;
-    /** 事件 listeners */
-    private listenersMap;
     constructor(options: ITreeStoreOptions);
+    /**
+     * Use this function to insert nodes into flatData to avoid 'maximun call stack size exceeded' error
+     * @param insertIndex The index to insert, the same usage as `this.flatData.splice(insertIndex, 0, insertNodes)`
+     * @param insertNodes Tree nodes to insert
+     */
+    private insertIntoFlatData;
     setData(data: ITreeNodeOptions[], selectableUnloadKey?: TreeNodeKeyType | null, checkableUnloadKeys?: TreeNodeKeyType[] | null): void;
     /**
      * 设置单个节点多选选中
@@ -120,7 +111,7 @@ export default class TreeStore {
     setExpandAll(value: boolean, triggerDataChange?: boolean): void;
     /**
      * 获取多选选中节点
-     * @param ignoreMode 忽略模式，可选择忽略父节点或子节点，默认值是 CTree 的 ignoreMode Prop
+     * @param ignoreMode 忽略模式，可选择忽略父节点或子节点，默认值是 VTree 的 ignoreMode Prop
      */
     getCheckedNodes(ignoreMode?: "none" | "parents" | "children" | undefined): TreeNode[];
     /**
@@ -220,9 +211,5 @@ export default class TreeStore {
      * 搜索节点在指定数组中的位置
      */
     private findIndex;
-    on<T extends keyof IEventNames>(eventName: T, listener: ListenerType<T> | Array<ListenerType<T>>): void;
-    off<T extends keyof IEventNames>(eventName: T, listener?: ListenerType<T>): void;
-    emit<T extends keyof IEventNames>(eventName: T, ...args: Parameters<IEventNames[T]>): void;
-    disposeListeners(): void;
 }
 export {};

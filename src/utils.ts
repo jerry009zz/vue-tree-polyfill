@@ -1,6 +1,6 @@
 import { Ref } from "vue";
 
-export const getCtreeMethods = <T extends string, K extends Record<T, any>>(apiMethods: readonly T[], ref: Ref<K | null>): Pick<K, T> => {
+export const getVTreeMethods = <T extends string, K extends Record<T, any>>(apiMethods: readonly T[], ref: Ref<K | null>): Pick<K, T> => {
   return apiMethods.reduce((prev, cur) => {
     const fn = (...args: any[]) => {
       const value = ref.value?.[cur]

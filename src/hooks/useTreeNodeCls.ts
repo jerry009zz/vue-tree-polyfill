@@ -1,7 +1,7 @@
 import { Ref, computed } from "vue"
 import { TreeNodeProps } from "../components/TreeNode.vue"
 
-const prefixCls = 'ctree-tree-node'
+const prefixCls = 'vtree-tree-node'
 
 export { prefixCls as TREE_NODE_PREFIX_CLS }
 

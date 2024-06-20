@@ -9,7 +9,7 @@
       <!-- 可见节点区域，包括上下两片空白加渲染的节点 -->
       <div :class="blockAreaCls">
         <div :style="{ height: `${topSpaceHeight}px` }"></div>
-        <CTreeNode
+        <VTreeNode
           v-for="node in renderNodes"
           v-bind="treeNodeProps"
           :key="node[keyField]"
@@ -211,7 +211,7 @@ import {
   toRefs,
 } from 'vue'
 import TreeStore, { TreeNode } from '../store'
-import CTreeNode from './TreeNode.vue'
+import VTreeNode from './TreeNode.vue'
 import LoadingIcon from './LoadingIcon.vue'
 import {
   ignoreEnum,
@@ -638,7 +638,7 @@ defineExpose({
 })
 
 defineOptions({
-  name: 'CTree',
+  name: 'VTree',
   inheritAttrs: false,
 })
 </script>

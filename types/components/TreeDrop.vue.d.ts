@@ -199,6 +199,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     cascade: boolean;
     defaultExpandAll: boolean;
     expandOnFilter: boolean;
+    data: import("../types").AnyPropsArrayType;
     titleField: string;
     checkable: boolean;
     selectable: boolean;
@@ -206,7 +207,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     disableAll: boolean;
     draggable: boolean;
     droppable: boolean;
-    data: import("../types").AnyPropsArrayType;
+    nodeIndent: number;
     emptyText: string;
     separator: string;
     showUnloadCheckedNodes: boolean;
@@ -217,7 +218,6 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     beforeDropMethod: (dragKey: TreeNodeKeyType, dropKey: TreeNodeKeyType, hoverPart: import("../constants").dragHoverPartEnum) => boolean;
     autoLoad: boolean;
     loading: boolean;
-    nodeIndent: number;
     renderNodeAmount: number;
     nodeMinHeight: number;
     bufferNodeAmount: number;

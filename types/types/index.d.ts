@@ -1,4 +1,4 @@
-import { placementEnum, ignoreEnum } from '../constants';
+import { placementEnum, ignoreEnum, showLineType } from '../constants';
 import TreeStore, { TreeNode } from '../store';
 export type PlacementType = keyof typeof placementEnum;
 export type TreeNodeKeyType = string | number;
@@ -21,4 +21,11 @@ export type AnyPropsArrayType = Array<{
 export interface INonReactiveData {
     store: TreeStore;
     blockNodes: TreeNode[];
+}
+export interface ShowLine {
+    /** 连接线宽度，svg stroke-width， 默认 1px */
+    width?: number;
+    type?: showLineType;
+    color?: string;
+    polyline?: boolean;
 }

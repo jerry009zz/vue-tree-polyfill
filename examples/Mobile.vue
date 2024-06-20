@@ -102,22 +102,22 @@ function onResetBtnClick() {
 
 <style lang="less" scoped>
 
-:deep(.ctree-tree-node_selected) {
+:deep(.vtree-tree-node_selected) {
   background-color: #eef5ff;
   border-radius: 4px;
-  .ctree-tree-node__title {
+  .vtree-tree-node__title {
     background: none;
   }
 }
-:deep(.ctree-tree-node__wrapper.ctree-tree-node__wrapper_is-leaf.ctree-tree-node_checked) {
+:deep(.vtree-tree-node__wrapper.vtree-tree-node__wrapper_is-leaf.vtree-tree-node_checked) {
   background-color: #eef5ff;
   border-radius: 4px;
 }
-:deep(.ctree-tree-node__checkbox_wrapper) {
+:deep(.vtree-tree-node__checkbox_wrapper) {
   display: none;
 }
-:deep(.ctree-tree-node__wrapper_is-leaf) {
-  .ctree-tree-node__checkbox_wrapper {
+:deep(.vtree-tree-node__wrapper_is-leaf) {
+  .vtree-tree-node__checkbox_wrapper {
     display: flex;
   }
 }

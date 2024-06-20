@@ -524,7 +524,7 @@ export default class TreeStore extends TreeEventTarget {
 
   /**
    * 获取多选选中节点
-   * @param ignoreMode 忽略模式，可选择忽略父节点或子节点，默认值是 CTree 的 ignoreMode Prop
+   * @param ignoreMode 忽略模式，可选择忽略父节点或子节点，默认值是 VTree 的 ignoreMode Prop
    */
   getCheckedNodes(ignoreMode = this.options.ignoreMode): TreeNode[] {
     if (ignoreMode === ignoreEnum.children) {

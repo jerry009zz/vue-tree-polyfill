@@ -1,10 +1,11 @@
 import { TreeNode } from '../store';
 import { TreeProps } from './Tree.vue';
 import { GetNodeFn } from '../types';
-type PickedProps = Required<Pick<TreeProps, 'titleField' | 'keyField' | 'checkable' | 'selectable' | 'unselectOnClick' | 'disableAll' | 'draggable' | 'droppable'>> & Pick<TreeProps, 'render'>;
+type PickedProps = Required<Pick<TreeProps, 'titleField' | 'keyField' | 'checkable' | 'selectable' | 'unselectOnClick' | 'disableAll' | 'draggable' | 'droppable' | 'nodeIndent'>> & Pick<TreeProps, 'render' | 'showLine'>;
 export type TreeNodeProps = PickedProps & {
     data: TreeNode;
-    getNode?: GetNodeFn;
+    getNode: GetNodeFn;
+    noSiblingNodeMap: Record<string, true>;
 };
 declare const _default: import("vue").DefineComponent<__VLS_TypePropsToOption<TreeNodeProps>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     [x: string]: (...args: any[]) => void;

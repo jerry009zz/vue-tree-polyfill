@@ -1,6 +1,6 @@
-#ctree-tree-search-styles () {
+#vtree-tree-search-styles () {
   // prefix
-  @tree-search-prefix: ~'@{ctree-prefix}-tree-search';
+  @tree-search-prefix: ~'@{vtree-prefix}-tree-search';
 
   // TreeSearch
   .@{tree-search-prefix} {
@@ -50,39 +50,39 @@
 
     // 搜索框
     &__input {
-      color: @ctree-color-content;
+      color: @vtree-color-content;
       box-sizing: border-box;
       width: 100%;
       height: 32px;
-      border: 1px solid @ctree-color-border;
+      border: 1px solid @vtree-color-border;
       border-radius: 4px;
       padding: 4px 7px;
       outline: none;
       transition: border 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 
       &::placeholder {
-        color: @ctree-color-input-placeholder;
+        color: @vtree-color-input-placeholder;
       }
 
       @media(any-hover:hover) {
         &:hover {
-          border-color: @ctree-color-input-border;
+          border-color: @vtree-color-input-border;
         }
       }
 
       &:focus {
-        border-color: @ctree-color-input-border;
-        box-shadow: 0 0 0 2px fade(@ctree-color-primary, 20%);
+        border-color: @vtree-color-input-border;
+        box-shadow: 0 0 0 2px fade(@vtree-color-primary, 20%);
       }
 
       &_disabled {
         cursor: not-allowed;
-        color: @ctree-color-input-disabled;
-        background-color: @ctree-color-input-background-disabled;
+        color: @vtree-color-input-disabled;
+        background-color: @vtree-color-input-background-disabled;
 
         @media(any-hover:hover) {
           &:hover {
-            border-color: @ctree-color-border;
+            border-color: @vtree-color-border;
           }
         }
       }
@@ -100,12 +100,12 @@
 
       @media(any-hover:hover) {
         &:hover {
-          color: @ctree-color-light-primary;
+          color: @vtree-color-light-primary;
         }
       }
 
       &_active {
-        color: @ctree-color-primary;
+        color: @vtree-color-primary;
       }
     }
 
@@ -123,4 +123,4 @@
   }
 }
 
-#ctree-tree-search-styles();
+#vtree-tree-search-styles();

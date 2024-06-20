@@ -1,4 +1,4 @@
-import { IEventNames } from "../store/tree-store";
+import { IEventNames } from "../store/tree-event-target";
 export declare const TREE_NODE_EVENTS: string[];
 export declare const STORE_EVENTS: Array<keyof IEventNames>;
 export declare const TREE_EVENTS: string[];

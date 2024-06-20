@@ -1,7 +1,7 @@
 import { VNode } from 'vue';
 import { TreeNode } from '../store';
 import { ignoreEnum, dragHoverPartEnum } from '../constants';
-import { TreeNodeKeyType, IgnoreType, AnyPropsArrayType, LoadFn } from '../types';
+import { TreeNodeKeyType, IgnoreType, AnyPropsArrayType, LoadFn, ShowLine } from '../types';
 import { FilterFunctionType } from '../store/tree-store';
 export interface TreeProps {
     /** 传入的树数据。数据量大时，不建议通过 props 传入数据，建议用 `setData` 方法代替 */
@@ -69,6 +69,8 @@ export interface TreeProps {
     loading?: boolean;
     /** 节点根元素的 class ，传入函数以对每个节点定制 class */
     nodeClassName?: string | object | Array<string | object> | ((node: TreeNode) => string | object | Array<string | object>);
+    /** 连接线 */
+    showLine?: boolean | ShowLine;
     /** 子节点缩进 */
     nodeIndent?: number;
     /** 渲染节点数量，可见节点数大于此值且高度超过(容器可视高度能容纳节点数 + bufferNodeAmount)则不会渲染所有可见节点 */
@@ -207,6 +209,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     cascade: boolean;
     defaultExpandAll: boolean;
     expandOnFilter: boolean;
+    data: AnyPropsArrayType;
     titleField: string;
     checkable: boolean;
     selectable: boolean;
@@ -214,7 +217,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     disableAll: boolean;
     draggable: boolean;
     droppable: boolean;
-    data: AnyPropsArrayType;
+    nodeIndent: number;
     emptyText: string;
     separator: string;
     showUnloadCheckedNodes: boolean;
@@ -225,7 +228,6 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     beforeDropMethod: (dragKey: TreeNodeKeyType, dropKey: TreeNodeKeyType, hoverPart: dragHoverPartEnum) => boolean;
     autoLoad: boolean;
     loading: boolean;
-    nodeIndent: number;
     renderNodeAmount: number;
     nodeMinHeight: number;
     bufferNodeAmount: number;

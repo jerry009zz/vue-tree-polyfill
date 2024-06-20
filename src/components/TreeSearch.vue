@@ -31,7 +31,7 @@
 
     <!-- 树区域 -->
     <div :class="treeWrapperCls">
-      <CTree
+      <VTree
         ref="treeRef"
         v-bind="props"
         v-model="treeModelValue"
@@ -42,7 +42,7 @@
         <template v-for="(_, slot) in $slots" :name="slot" v-slot="scope">
           <slot :name="slot" v-bind="scope"></slot>
         </template>
-      </CTree>
+      </VTree>
     </div>
 
     <!-- 底部信息 -->
@@ -108,10 +108,10 @@ import {
   computed,
   onMounted,
 } from 'vue'
-import CTree, { DEFAULT_TREE_PROPS, TreeProps } from './Tree.vue'
+import VTree, { DEFAULT_TREE_PROPS, TreeProps } from './Tree.vue'
 import { useTreeSearchCls } from '../hooks/useTreeSearchCls'
 import { TreeNode } from '..'
-import { getCtreeMethods } from '../utils'
+import { getVTreeMethods } from '../utils'
 import { TREE_API_METHODS } from '../constants'
 import { TREE_EVENTS, TREE_SEARCH_EVENTS } from '../constants/events'
 
@@ -141,7 +141,7 @@ const isShowingChecked = ref(false)
 const keyword = ref('')
 const debounceTimer = ref<number | undefined>(undefined)
 const checkedCount = ref(0)
-const treeRef = ref<InstanceType<typeof CTree> | null>(null)
+const treeRef = ref<InstanceType<typeof VTree> | null>(null)
 
 const {
   wrapperCls,
@@ -325,14 +325,14 @@ onMounted(() => {
 })
 
 defineExpose({
-  ...getCtreeMethods(TREE_API_METHODS, treeRef),
+  ...getVTreeMethods(TREE_API_METHODS, treeRef),
   clearKeyword,
   getKeyword,
   search,
 })
 
 defineOptions({
-  name: 'CTreeSearch',
+  name: 'VTreeSearch',
   inheritAttrs: false,
 })
 </script>

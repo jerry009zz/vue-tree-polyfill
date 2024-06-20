@@ -2,7 +2,7 @@ import { Ref, computed } from 'vue'
 import { TREE_SEARCH_PREFIX_CLS as treeSearchPrefixCls } from './useTreeSearchCls'
 import { TreeDropProps } from '../components/TreeDrop.vue'
 
-const prefixCls = 'ctree-tree-drop'
+const prefixCls = 'vtree-tree-drop'
 
 export { prefixCls as TREE_DROP_PREFIX_CLS }
 

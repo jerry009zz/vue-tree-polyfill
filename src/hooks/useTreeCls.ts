@@ -1,6 +1,6 @@
 import { computed } from "vue"
 
-const prefixCls = 'ctree-tree'
+const prefixCls = 'vtree-tree'
 
 export { prefixCls as TREE_PREFIX_CLS }
 

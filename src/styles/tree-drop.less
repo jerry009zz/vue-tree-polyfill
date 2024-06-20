@@ -1,8 +1,8 @@
-#ctree-tree-drop-styles () {
+#vtree-tree-drop-styles () {
   // prefix
-  @tree-drop-prefix: ~'@{ctree-prefix}-tree-drop';
-  @tree-search-prefix: ~'@{ctree-prefix}-tree-search';
-  @tree-dropdown-prefix: ~'@{ctree-prefix}-dropdown';
+  @tree-drop-prefix: ~'@{vtree-prefix}-tree-drop';
+  @tree-search-prefix: ~'@{vtree-prefix}-tree-search';
+  @tree-dropdown-prefix: ~'@{vtree-prefix}-dropdown';
 
   // TreeDrop
   .@{tree-drop-prefix} {
@@ -31,12 +31,12 @@
         }
 
         &-placeholder {
-          color: @ctree-color-input-placeholder;
+          color: @vtree-color-input-placeholder;
         }
 
         &_focus {
-          border-color: @ctree-color-input-border;
-          box-shadow: 0 0 0 2px fade(@ctree-color-primary, 20%);
+          border-color: @vtree-color-input-border;
+          box-shadow: 0 0 0 2px fade(@vtree-color-primary, 20%);
         }
       }
 
@@ -60,7 +60,7 @@
             translateY(@translate);
 
           .icon();
-          border: 3px solid @ctree-color-sub;
+          border: 3px solid @vtree-color-sub;
           border-top: none;
           border-left: none;
           transform: rotate(45deg) @transform-rest;
@@ -91,7 +91,7 @@
 
           .icon();
           border-radius: 50%;
-          background-color: @ctree-color-sub;
+          background-color: @vtree-color-sub;
           overflow: hidden;
           transform: scale(@scale) rotate(45deg);
           display: none;
@@ -130,7 +130,7 @@
       .@{tree-search-prefix} {
         // TreeSearch 搜索区域
         &__search {
-          border-bottom: 1px solid @ctree-color-border;
+          border-bottom: 1px solid @vtree-color-border;
           padding-bottom: 5px;
           height: 38px;
         }
@@ -158,4 +158,4 @@
   }
 }
 
-#ctree-tree-drop-styles();
+#vtree-tree-drop-styles();

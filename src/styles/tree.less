@@ -1,6 +1,6 @@
-#ctree-tree-styles () {
+#vtree-tree-styles () {
   // prefix
-  @tree-prefix: ~'@{ctree-prefix}-tree';
+  @tree-prefix: ~'@{vtree-prefix}-tree';
   @tree-node-prefix: ~'@{tree-prefix}-node';
 
   // Tree
@@ -56,7 +56,7 @@
         text-align: center;
       }
       &-icon {
-        #ctree-loading-icon-styles();
+        #vtree-loading-icon-styles();
       }
     }
 
@@ -95,7 +95,7 @@
       height: 2px;
 
       &_active {
-        background-color: @ctree-color-light-primary;
+        background-color: @vtree-color-light-primary;
       }
     }
 
@@ -131,7 +131,7 @@
           height: 0;
           position: absolute;
           border: @icon-border-width solid transparent;
-          border-left: @icon-border-width solid @ctree-color-content;
+          border-left: @icon-border-width solid @vtree-color-content;
         }
 
         display: flex;
@@ -154,7 +154,7 @@
 
     // Loading icon
     &__loading-icon {
-      #ctree-loading-icon-styles(14px, @ctree-color-content);
+      #vtree-loading-icon-styles(14px, @vtree-color-content);
     }
 
     // 复选框
@@ -162,8 +162,8 @@
       @checkbox-size: 14px;
 
       .active-color () {
-        border-color: @ctree-color-primary;
-        background-color: @ctree-color-primary;
+        border-color: @vtree-color-primary;
+        background-color: @vtree-color-primary;
       }
 
       box-sizing: border-box;
@@ -172,7 +172,7 @@
       height: @checkbox-size;
       position: absolute;
       border: 1px solid;
-      border-color: @ctree-color-border;
+      border-color: @vtree-color-border;
       border-radius: 2px;
       background-color: #fff;
       transition: border-color 0.2s ease-in-out,
@@ -196,12 +196,12 @@
 
       @media(any-hover:hover) {
         &:hover {
-          border-color: @ctree-color-disabled;
+          border-color: @vtree-color-disabled;
         }
       }
 
       &:focus {
-        box-shadow: 0 0 0 2px @ctree-color-light-primary;
+        box-shadow: 0 0 0 2px @vtree-color-light-primary;
       }
 
       &_checked {
@@ -244,18 +244,18 @@
 
       &_disabled {
         cursor: not-allowed;
-        border-color: @ctree-color-border;
-        background-color: @ctree-color-divider;
+        border-color: @vtree-color-border;
+        background-color: @vtree-color-divider;
 
         @media(any-hover:hover) {
           &:hover {
-            border-color: @ctree-color-border;
-            background-color: @ctree-color-divider;
+            border-color: @vtree-color-border;
+            background-color: @vtree-color-divider;
           }
         }
 
         &::after {
-          border-color: @ctree-color-disabled;
+          border-color: @vtree-color-disabled;
         }
       }
     }
@@ -280,13 +280,13 @@
 
       @media(any-hover:hover) {
         &:hover {
-          background-color: lighten(@ctree-color-light-primary, 28%);
+          background-color: lighten(@vtree-color-light-primary, 28%);
         }
       }
 
       &_selected {
         .selected () {
-          background-color: lighten(@ctree-color-primary, 35%);
+          background-color: lighten(@vtree-color-primary, 35%);
         }
 
         .selected();
@@ -300,10 +300,10 @@
 
       &_disabled {
         cursor: not-allowed;
-        color: @ctree-color-disabled;
+        color: @vtree-color-disabled;
       }
     }
   }
 }
 
-#ctree-tree-styles();
+#vtree-tree-styles();
