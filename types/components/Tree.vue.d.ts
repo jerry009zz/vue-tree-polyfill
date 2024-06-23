@@ -71,6 +71,8 @@ export interface TreeProps {
     nodeClassName?: string | object | Array<string | object> | ((node: TreeNode) => string | object | Array<string | object>);
     /** 连接线 */
     showLine?: boolean | ShowLine;
+    /** 是否启用过渡动画，目前仅控制展开收起 */
+    animation?: boolean;
     /** 子节点缩进 */
     nodeIndent?: number;
     /** 渲染节点数量，可见节点数大于此值且高度超过(容器可视高度能容纳节点数 + bufferNodeAmount)则不会渲染所有可见节点 */
@@ -232,6 +234,15 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     nodeMinHeight: number;
     bufferNodeAmount: number;
 }, {}>, {
+    node?(_: {
+        node: TreeNode;
+    }): any;
+    node?(_: {
+        node: TreeNode;
+    }): any;
+    node?(_: {
+        node: TreeNode;
+    }): any;
     empty?(_: {}): any;
     loading?(_: {}): any;
 }>;

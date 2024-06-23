@@ -7,10 +7,19 @@ export type TreeNodeProps = PickedProps & {
     getNode: GetNodeFn;
     noSiblingNodeMap: Record<string, true>;
 };
-declare const _default: import("vue").DefineComponent<__VLS_TypePropsToOption<TreeNodeProps>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__VLS_TypePropsToOption<TreeNodeProps>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     [x: string]: (...args: any[]) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<TreeNodeProps>>>, {}, {}>;
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<TreeNodeProps>>>, {}, {}>, {
+    default?(_: {
+        node: TreeNode;
+    }): any;
+}>;
 export default _default;
+type __VLS_WithTemplateSlots<T, S> = T & {
+    new (): {
+        $slots: S;
+    };
+};
 type __VLS_NonUndefinedable<T> = T extends undefined ? never : T;
 type __VLS_TypePropsToOption<T> = {
     [K in keyof T]-?: {} extends Pick<T, K> ? {
