@@ -1,17 +1,27 @@
-# Vue-Tree 3.x
+# Vue-Tree 4.x
 
-一款高性能 vue 虚拟树控件，支持搜索，定位，拖拽等。该控件是在公司业务的基础上不断打磨出来的，提供了十分丰富强大的 API，几乎能够满足你对树控件的所有需求。该控件同时支持 vue2 以及 vue3。
+一款高性能 vue 虚拟树控件，支持搜索，定位，拖拽等。该控件是在公司业务的基础上不断打磨出来的，提供了十分丰富强大的 API，几乎能够满足你对树控件的所有需求。
 
-> 这是原先[ctree](https://github.com/wsfe/vue-tree/tree/2.x)的升级版本，同时支持 vue2 和 vue3。
+> 这是原先 [ctree](https://github.com/wsfe/vue-tree/tree/2.x) 的升级版本
 > 新版改变了包的名称和部分 export 模块名称。
 
 ## **注意**
 
-`@wsfe/vue-tree` 使用了 `vue-demi` 包尝试使组件在 vue 2/3 都通用。但遗憾的是 `vue-demi` 并不能完美使 vue3 组件兼容 vue2 。
+`@wsfe/vue-tree` 3.x 尝试使用 `vue-demi` 包使组件在 Vue 2/3 都通用。但遗憾的是 `vue-demi` 并不能完美使 Vue3 组件兼容 Vue2。`@wsfe/vue-tree` 4.x 将仅支持 Vue3
 
-`@wsfe/vue-tree` 将使用最新版 vue(3.x) 开发
+因此，建议 Vue2 用户使用 `@wsfe/ctree` 包
 
-因此，建议 vue2 用户使用 2.x 使用 `@wsfe/ctree` 包。
+## 从旧版迁移
+
+从 `@wsfe/ctree` 或者 `@wsfe/vue-tree` 3.x 迁移到 `@wsfe/vue-tree` 4.x 需按如下步骤修改：
+
+1. 所有 Less 变量与 CSS 相关 class 前缀从 `ctree` 改为 `vtree`
+2. 导出的包前缀从 `C` 改为 `V`，例如：
+
+```diff
+- import CTree, { CTreeSearch, CTreeDrop } from '@wsfe/ctree'
++ import VTree, { VTreeSearch, VTreeDrop } from '@wsfe/vue-tree'
+```
 
 ## 案例
 
