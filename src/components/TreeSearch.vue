@@ -39,7 +39,7 @@
         @set-data="onSetData"
         @checked-change="checkedChange"
       >
-        <template v-for="(_, slot) in $slots" :name="slot" v-slot="scope">
+        <template v-for="(_, slot) in $slots" v-slot:[slot]="scope">
           <slot :name="slot" v-bind="scope"></slot>
         </template>
       </VTree>

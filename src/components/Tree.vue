@@ -25,7 +25,11 @@
           @select="handleNodeSelect"
           @expand="handleNodeExpand"
           @node-drop="handleNodeDrop"
-        />
+        >
+          <template #default="slotProps">
+            <slot name="node" v-bind="slotProps"></slot>
+          </template>
+        </VTreeNode>
         <template v-if="expandAnimation.ready.value">
           <Transition
             name="vtree-expand-animation"
@@ -54,7 +58,11 @@
                   @select="handleNodeSelect"
                   @expand="handleNodeExpand"
                   @node-drop="handleNodeDrop"
-                />
+                >
+                  <template #default="slotProps">
+                    <slot name="node" v-bind="slotProps"></slot>
+                  </template>
+                </VTreeNode>
               </div>
             </div>
           </Transition>
@@ -73,7 +81,11 @@
             @select="handleNodeSelect"
             @expand="handleNodeExpand"
             @node-drop="handleNodeDrop"
-          />
+          >
+            <template #default="slotProps">
+              <slot name="node" v-bind="slotProps"></slot>
+            </template>
+          </VTreeNode>
         </template>
         <div :style="{ height: `${bottomSpaceHeight}px` }"></div>
       </div>

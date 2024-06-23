@@ -186,6 +186,30 @@
       </div>
     </div>
 
+    <!-- 自定义节点 -->
+    <div class="panel">
+      <div class="header">自定义节点</div>
+      <div class="body">
+        <div class="interface">
+          <div style="height: 300px">
+            <VTree :data="basicUsage">
+              <template #node="{ node }">
+                <button>{{ node.title }}</button>
+              </template>
+            </VTree>
+          </div>
+        </div>
+        <div class="desc">
+          <div class="desc-block">
+            除了 render，也可以传入 slot 自定义树节点
+            <pre>
+              {{ nodeSlotDescText }}
+            </pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- 远程 -->
     <div class="panel">
       <div class="header">远程</div>
@@ -418,6 +442,14 @@ export default defineComponent({
       showLinePolyline.value = polyline
     }
 
+    const nodeSlotDescText = `
+<VTree :data="basicUsage">
+  <template #node="{ node }">
+    <button>{{ node.title }}</button>
+  </template>
+</VTree>
+    `
+
     return {
       // 基本用法
       basicUsage,
@@ -453,6 +485,9 @@ export default defineComponent({
       onShowLineTypeBtnClick,
       showLinePolyline,
       onShowLinePolylineBtnClick,
+
+      // 自定义节点
+      nodeSlotDescText,
 
       // 远程
       remoteShow,

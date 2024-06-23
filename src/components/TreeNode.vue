@@ -52,8 +52,10 @@
           v-on="dragListeners"
           :draggable="draggable && !disableAll && !data?.disabled"
         >
-          <component v-if="renderFunction" :is="renderComponent"></component>
-          <template v-else>{{ data ? data[titleField] : '' }}</template>
+          <slot :node="data">
+            <component v-if="renderFunction" :is="renderComponent"></component>
+            <template v-else>{{ data ? data[titleField] : '' }}</template>
+          </slot>
         </div>
       </div>
       <div :class="dropAfterCls"></div>
