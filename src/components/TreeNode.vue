@@ -52,7 +52,7 @@
           v-on="dragListeners"
           :draggable="draggable && !disableAll && !data?.disabled"
         >
-          <slot :node="data">
+          <slot :node="fullData">
             <component v-if="renderFunction" :is="renderComponent"></component>
             <template v-else>{{ data ? data[titleField] : '' }}</template>
           </slot>
