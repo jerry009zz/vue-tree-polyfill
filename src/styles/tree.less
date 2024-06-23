@@ -2,6 +2,7 @@
   // prefix
   @tree-prefix: ~'@{vtree-prefix}-tree';
   @tree-node-prefix: ~'@{tree-prefix}-node';
+  @tree-expand-animation: ~'@{vtree-prefix}-expand-animation';
 
   // Tree
   .@{tree-prefix} {
@@ -302,6 +303,25 @@
         cursor: not-allowed;
         color: @vtree-color-disabled;
       }
+    }
+  }
+
+  .@{tree-expand-animation} {
+    &-enter-from,
+    &-leave-to {
+      opacity: 0;
+      grid-template-rows: 0fr;
+    }
+
+    &-enter-to,
+    &-leave-from {
+      opacity: 1;
+      grid-template-rows: 1fr;
+    }
+
+    &-enter-active,
+    &-leave-active {
+      transition: opacity .2s, grid-template-rows .2s;
     }
   }
 }

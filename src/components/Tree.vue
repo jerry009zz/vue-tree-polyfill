@@ -10,18 +10,14 @@
       <div :class="blockAreaCls">
         <div :style="{ height: `${topSpaceHeight}px` }"></div>
         <VTreeNode
-          v-for="node in renderNodes"
+          v-for="node in (expandAnimation.ready.value ? expandAnimation.topNodes.value : renderNodes)"
           v-bind="treeNodeProps"
           :key="node[keyField]"
           :data="node"
           :getNode="getNode"
           :noSiblingNodeMap="noSiblingNodeMap"
           v-on="treeNodeListeners"
-          :class="
-            typeof nodeClassName === 'function'
-              ? nodeClassName(node)
-              : nodeClassName
-          "
+          :class="getNodeClassName(node)"
           :style="{
             minHeight: `${nodeMinHeight}px`,
           }"
@@ -30,6 +26,55 @@
           @expand="handleNodeExpand"
           @node-drop="handleNodeDrop"
         />
+        <template v-if="expandAnimation.ready.value">
+          <Transition
+            name="vtree-expand-animation"
+            @after-enter="expandAnimation.onExpandAnimationFinish"
+            @after-leave="expandAnimation.onExpandAnimationFinish"
+          >
+            <div
+              v-show="expandAnimation.currentExpandState.value"
+              :style="{
+                display: 'grid',
+              }"
+            >
+              <div :style="{ overflow: 'hidden' }">
+                <VTreeNode
+                  v-for="node in expandAnimation.middleNodes.value"
+                  v-bind="treeNodeProps"
+                  :key="node[keyField]"
+                  :data="node"
+                  :getNode="getNode"
+                  :noSiblingNodeMap="noSiblingNodeMap"
+                  :class="getNodeClassName(node)"
+                  :style="{
+                    minHeight: `${nodeMinHeight}px`,
+                  }"
+                  @check="handleNodeCheck"
+                  @select="handleNodeSelect"
+                  @expand="handleNodeExpand"
+                  @node-drop="handleNodeDrop"
+                />
+              </div>
+            </div>
+          </Transition>
+          <VTreeNode
+            v-for="node in expandAnimation.bottomNodes.value"
+            v-bind="treeNodeProps"
+            :key="node[keyField]"
+            :data="node"
+            :getNode="getNode"
+            :noSiblingNodeMap="noSiblingNodeMap"
+            :class="getNodeClassName(node)"
+            :style="{
+              minHeight: `${nodeMinHeight}px`,
+            }"
+            @check="handleNodeCheck"
+            @select="handleNodeSelect"
+            @expand="handleNodeExpand"
+            @node-drop="handleNodeDrop"
+          />
+        </template>
         <div :style="{ height: `${bottomSpaceHeight}px` }"></div>
       </div>
     </div>
@@ -153,6 +198,9 @@ export interface TreeProps {
   /** 连接线 */
   showLine?: boolean | ShowLine
 
+  /** 是否启用过渡动画，目前仅控制展开收起 */
+  animation?: boolean
+
   /** 子节点缩进 */
   nodeIndent?: number,
 
@@ -225,6 +273,7 @@ import { useIframeResize } from '../hooks/useIframeResize'
 import { usePublicTreeAPI } from '../hooks/usePublicTreeAPI'
 import { FilterFunctionType } from '../store/tree-store'
 import { pickReadonly } from '../utils'
+import { useExpandAnimation } from '../hooks/useExpandAnimation'
 
 const props = withDefaults(defineProps<TreeProps>(), DEFAULT_TREE_PROPS)
 
@@ -306,6 +355,8 @@ const {
   scrollTo,
 } = useVirtualList(nonReactive, props)
 
+const expandAnimation = useExpandAnimation(renderNodes, props)
+
 const {
   unloadCheckedNodes,
   isRootLoading,
@@ -346,6 +397,10 @@ const {
   updateBlockData,
   updateRender,
 })
+
+const getNodeClassName = (node: TreeNode) => {
+  return typeof props.nodeClassName === 'function' ? props.nodeClassName(node) : props.nodeClassName
+}
 
 const noSiblingNodeMap = computed(() => {
   const parentsOfFirstNode: TreeNode[] = []
@@ -421,6 +476,7 @@ const handleNodeSelect = (node: TreeNode): void => {
   nonReactive.store.setSelected(node[props.keyField], !node.selected)
 }
 const handleNodeExpand = (node: TreeNode): void => {
+  expandAnimation.updateBeforeExpand(node)
   nonReactive.store.setExpand(node[props.keyField], !node.expand)
 }
 const handleNodeDrop = (
@@ -553,6 +609,7 @@ const emitSelectableInput = (
 }
 
 onMounted(() => {
+  nonReactive.store.on('expand', expandAnimation.updateAfterExpand)
   nonReactive.store.on('visible-data-change', updateBlockNodes)
   nonReactive.store.on('render-data-change', updateRender)
   nonReactive.store.on(

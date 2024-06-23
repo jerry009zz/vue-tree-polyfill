@@ -10,6 +10,7 @@
               ref="basicTreeRef"
               :data="basicUsage"
               :nodeClassName="node => `generated-class-${node.id}`"
+              animation
               @click="handleClick"
               @node-dblclick="handleDblClick"
               @node-right-click="handleRightClick"
@@ -145,10 +146,10 @@
         <div class="interface">
           <div style="height: 300px">
             <VTree
-              ref="basicTreeRef"
               :data="showLineTreeData"
               :showLine="{ type: showLineType, polyline: showLinePolyline }"
               defaultExpandAll
+              animation
             />
           </div>
         </div>

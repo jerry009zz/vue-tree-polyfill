@@ -20,7 +20,7 @@
     </div>
 
     <!-- 下拉框 -->
-    <transition name="vtree-dropdown">
+    <Transition name="vtree-dropdown">
       <div
         ref="dropdownRef"
         v-show="dropdownVisible"
@@ -43,7 +43,7 @@
           </template>
         </VTreeSearch>
       </div>
-    </transition>
+    </Transition>
   </div>
 </template>
 
