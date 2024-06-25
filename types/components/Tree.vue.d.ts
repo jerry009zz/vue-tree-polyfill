@@ -172,7 +172,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     filter: (keyword: string, filterMethod?: FilterFunctionType | undefined) => void;
     showCheckedNodes: (showUnloadCheckedNodes?: boolean | undefined) => void;
     loadRootNodes: () => Promise<void>;
-    scrollTo: (key: TreeNodeKeyType, verticalPosition?: number | "bottom" | "top" | "center") => void;
+    scrollTo: (key: TreeNodeKeyType, verticalPosition?: number | "top" | "center" | "bottom") => void;
 }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     [x: string]: (...args: any[]) => void;
 }, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<TreeProps>, {
@@ -205,31 +205,31 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     renderNodeAmount: number;
     bufferNodeAmount: number;
 }>>>, {
-    keyField: string;
-    ignoreMode: "none" | "parents" | "children";
-    filteredNodeCheckable: boolean;
-    cascade: boolean;
-    defaultExpandAll: boolean;
-    expandOnFilter: boolean;
     data: AnyPropsArrayType;
-    titleField: string;
-    checkable: boolean;
-    selectable: boolean;
-    unselectOnClick: boolean;
-    disableAll: boolean;
-    draggable: boolean;
-    droppable: boolean;
-    nodeIndent: number;
     emptyText: string;
+    selectable: boolean;
+    checkable: boolean;
     separator: string;
+    ignoreMode: "none" | "parents" | "children";
+    titleField: string;
+    keyField: string;
     showUnloadCheckedNodes: boolean;
     unloadDataList: AnyPropsArrayType;
+    filteredNodeCheckable: boolean;
+    cascade: boolean;
     enableLeafOnly: boolean;
+    disableAll: boolean;
+    defaultExpandAll: boolean;
     defaultExpandedKeys: TreeNodeKeyType[];
     expandedKeys: TreeNodeKeyType[];
+    draggable: boolean;
+    droppable: boolean;
     beforeDropMethod: (dragKey: TreeNodeKeyType, dropKey: TreeNodeKeyType, hoverPart: dragHoverPartEnum) => boolean;
     autoLoad: boolean;
+    expandOnFilter: boolean;
+    unselectOnClick: boolean;
     loading: boolean;
+    nodeIndent: number;
     renderNodeAmount: number;
     nodeMinHeight: number;
     bufferNodeAmount: number;
