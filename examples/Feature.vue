@@ -10,6 +10,7 @@
               ref="basicTreeRef"
               :data="basicUsage"
               :nodeClassName="node => `generated-class-${node.id}`"
+              animation
               @click="handleClick"
               @node-dblclick="handleDblClick"
               @node-right-click="handleRightClick"
@@ -138,6 +139,77 @@
       </div>
     </div>
 
+    <!-- 连接线 -->
+    <div class="panel">
+      <div class="header">连接线</div>
+      <div class="body">
+        <div class="interface">
+          <div style="height: 300px">
+            <VTree
+              :data="showLineTreeData"
+              :showLine="{ type: showLineType, polyline: showLinePolyline }"
+              defaultExpandAll
+              animation
+            />
+          </div>
+        </div>
+        <div class="desc">
+          <div class="desc-block">
+            传入 showLine 可展示连接线，type 可指定连接线类型
+          </div>
+          <div class="desc-block">
+            showLine 传入对象可设置连接线的宽度，连线类型与颜色等<br/>
+            showLine.type:
+
+            <button
+              v-for="showLineType in (['solid', 'dashed'] as showLineType[])"
+              :key="showLineType"
+              @click="onShowLineTypeBtnClick(showLineType)"
+            >
+              {{ showLineType }}
+            </button>
+            <p>当前连接线类型：{{showLineType}}</p>
+          </div>
+          <div class="desc-block">
+            showLine.polyline:
+
+            <button
+              v-for="polyline in [true, false]"
+              :key="polyline"
+              @click="onShowLinePolylineBtnClick(polyline)"
+            >
+              {{ polyline }}
+            </button>
+            <p>是否启用折线：{{showLinePolyline}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 自定义节点 -->
+    <div class="panel">
+      <div class="header">自定义节点</div>
+      <div class="body">
+        <div class="interface">
+          <div style="height: 300px">
+            <VTree :data="basicUsage">
+              <template #node="{ node }">
+                <button>{{ node.title }}</button>
+              </template>
+            </VTree>
+          </div>
+        </div>
+        <div class="desc">
+          <div class="desc-block">
+            除了 render，也可以传入 slot 自定义树节点
+            <pre>
+              {{ nodeSlotDescText }}
+            </pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- 远程 -->
     <div class="panel">
       <div class="header">远程</div>
@@ -165,9 +237,10 @@
 
 <script lang="ts">
 import VTree, { TreeNode } from '../src'
+import { showLineType } from '../src/constants'
 import { IgnoreType } from '../src/types'
 import treeDataGenerator from '../tests/tree-data-generator'
-import { defineComponent, ref, nextTick } from 'vue-demi'
+import { defineComponent, ref, nextTick } from 'vue'
 
 const genData = (extra = {}) => {
   return treeDataGenerator(
@@ -214,6 +287,80 @@ export default defineComponent({
     const checkableCascade = ref(true)
     const both = ref(genData().data)
     const bothValue = ref([])
+    const showLineTreeData = ref([
+      {
+        title: 'node-1',
+        id: 'node-1',
+        children: [
+          {
+            title: 'node-1-1',
+            id: 'node-1-1',
+            children: [
+              {
+                title: 'node-1-1-1',
+                id: 'node-1-1-1',
+              },
+              {
+                title: 'node-1-1-2',
+                id: 'node-1-1-2',
+              },
+              {
+                title: 'node-1-1-3',
+                id: 'node-1-1-3',
+              },
+            ],
+          },
+          {
+            title: 'node-1-2',
+            id: 'node-1-2',
+            children: [
+              {
+                title: 'node-1-2-1',
+                id: 'node-1-2-1',
+              },
+              {
+                title: 'node-1-2-2',
+                id: 'node-1-2-2',
+              },
+            ],
+          },
+          {
+            title: 'node-1-3',
+            id: 'node-1-3',
+            children: [
+              {
+                title: 'node-1-3-1',
+                id: 'node-1-3-1',
+              },
+              {
+                title: 'node-1-3-2',
+                id: 'node-1-3-2',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        title: 'node-2',
+        id: 'node-2',
+        children: [
+          {
+            title: 'node-2-1',
+            id: 'node-2-1',
+            children: [
+              {
+                title: 'node-2-1-1',
+                id: 'node-2-1-1',
+              },
+              {
+                title: 'node-2-1-2',
+                id: 'node-2-1-2',
+              },
+            ],
+          },
+        ],
+      },
+    ])
     const remoteShow = ref(false)
     const remoteLoad = (
       node: TreeNode | null,
@@ -285,6 +432,24 @@ export default defineComponent({
       console.log('node-right-click mouse position', e.x, e.y)
     }
 
+    const showLineType = ref()
+    const onShowLineTypeBtnClick = (type: showLineType) => {
+      showLineType.value = type
+    }
+
+    const showLinePolyline = ref(false)
+    const onShowLinePolylineBtnClick = (polyline: boolean) => {
+      showLinePolyline.value = polyline
+    }
+
+    const nodeSlotDescText = `
+<VTree :data="basicUsage">
+  <template #node="{ node }">
+    <button>{{ node.title }}</button>
+  </template>
+</VTree>
+    `
+
     return {
       // 基本用法
       basicUsage,
@@ -313,6 +478,16 @@ export default defineComponent({
       // 单选与多选并存
       both,
       bothValue,
+
+      // 连接线
+      showLineTreeData,
+      showLineType,
+      onShowLineTypeBtnClick,
+      showLinePolyline,
+      onShowLinePolylineBtnClick,
+
+      // 自定义节点
+      nodeSlotDescText,
 
       // 远程
       remoteShow,

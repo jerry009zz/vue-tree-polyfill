@@ -1,7 +1,7 @@
 <template>
   <svg viewBox="0 0 50 50">
     <circle
-      class="ctree-loading-icon__circle"
+      class="vtree-loading-icon__circle"
       cx="25"
       cy="25"
       r="20"
@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue-demi'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'CLoadingIcon'

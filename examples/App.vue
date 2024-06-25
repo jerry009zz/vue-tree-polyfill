@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue-demi'
+import { defineComponent, reactive, ref } from 'vue'
 import Drag from './Drag.vue'
 
 import Loading from './Loading.vue'

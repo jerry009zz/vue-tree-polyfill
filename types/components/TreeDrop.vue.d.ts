@@ -1,56 +1,243 @@
-import { PropType } from 'vue-demi';
+import { TreeSearchProps } from './TreeSearch.vue';
 import { TreeNode } from '../store';
-import { placementEnum } from '../const';
-import { TreeNodeKeyType } from '../types';
-declare const _default: import("vue-demi").DefineComponent<{
-    /** 兼容 Vue 2.5.16 bug */
-    modelValue: PropType<string | number | TreeNodeKeyType[]>;
+import { placementEnum } from '../constants';
+import { TreeNodeKeyType, PlacementType } from '../types';
+export type TreeDropProps = TreeSearchProps & {
     /** 下拉内容高度 */
-    dropHeight: {
-        type: NumberConstructor;
-        default: number;
-    };
+    dropHeight?: number;
     /** 展示输入框 placeholder */
-    dropPlaceholder: {
-        type: StringConstructor;
-    };
+    dropPlaceholder?: string;
     /** 是否禁用 */
-    dropDisabled: {
-        type: BooleanConstructor;
-        default: boolean;
-    };
+    dropDisabled?: boolean;
     /** 允许清空 */
-    clearable: {
-        type: BooleanConstructor;
-        default: boolean;
-    };
+    clearable?: boolean;
     /** 下拉弹出框位置 */
-    placement: {
-        type: PropType<"top" | "bottom" | "bottom-start" | "bottom-end" | "top-start" | "top-end">;
-        default: placementEnum;
-    };
+    placement?: PlacementType;
     /** 将下拉 DOM 转移到 body 中 */
-    transfer: {
-        type: BooleanConstructor;
-        default: boolean;
-    };
+    transfer?: boolean;
     /** 在下拉框容器上额外添加的 class */
-    dropdownClassName: PropType<string | string[]>;
+    dropdownClassName?: string | string[];
     /** 下拉框容器最小宽度，未指定则默认为展示输入框宽度 */
-    dropdownMinWidth: {
-        type: NumberConstructor;
-    };
+    dropdownMinWidth?: number;
     /** 固定下拉框容器宽度，当内容超出最小宽度不会伸长，而是出现横向滚动条 */
-    dropdownWidthFixed: {
-        type: BooleanConstructor;
-        default: boolean;
-    };
-}, {
-    treeSearchValue: import("vue-demi").WritableComputedRef<string | number | TreeNodeKeyType[] | undefined>;
-    dropdownVisible: import("vue-demi").Ref<boolean>;
-    checkedCount: import("vue-demi").Ref<number>;
-    selectedTitle: import("vue-demi").Ref<string>;
-    slotProps: {
+    dropdownWidthFixed?: boolean;
+};
+export declare const DEFAULT_TREE_DROP_PROPS: {
+    dropHeight: number;
+    dropDisabled: boolean;
+    clearable: boolean;
+    placement: placementEnum;
+    transfer: boolean;
+    dropdownWidthFixed: boolean;
+    searchPlaceholder: string;
+    showCheckAll: boolean;
+    showCheckedButton: boolean;
+    checkedButtonText: string;
+    showFooter: boolean;
+    searchLength: number;
+    searchDisabled: boolean;
+    searchRemote: boolean;
+    searchDebounceTime: number;
+    data: () => never[];
+    unloadDataList: () => never[];
+    showUnloadCheckedNodes: boolean;
+    emptyText: string;
+    titleField: string;
+    keyField: string;
+    separator: string;
+    checkable: boolean;
+    selectable: boolean;
+    filteredNodeCheckable: boolean;
+    cascade: boolean;
+    enableLeafOnly: boolean;
+    disableAll: boolean;
+    defaultExpandAll: boolean;
+    defaultExpandedKeys: () => never[];
+    expandedKeys: () => never[];
+    draggable: boolean;
+    droppable: boolean;
+    beforeDropMethod: () => () => boolean;
+    ignoreMode: import("../constants").ignoreEnum;
+    autoLoad: boolean;
+    expandOnFilter: boolean;
+    unselectOnClick: boolean;
+    loading: boolean;
+    nodeMinHeight: number;
+    nodeIndent: number;
+    renderNodeAmount: number;
+    bufferNodeAmount: number;
+};
+declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToOption<TreeDropProps>, {
+    dropHeight: number;
+    dropDisabled: boolean;
+    clearable: boolean;
+    placement: placementEnum;
+    transfer: boolean;
+    dropdownWidthFixed: boolean;
+    searchPlaceholder: string;
+    showCheckAll: boolean;
+    showCheckedButton: boolean;
+    checkedButtonText: string;
+    showFooter: boolean;
+    searchLength: number;
+    searchDisabled: boolean;
+    searchRemote: boolean;
+    searchDebounceTime: number;
+    data: () => never[];
+    unloadDataList: () => never[];
+    showUnloadCheckedNodes: boolean;
+    emptyText: string;
+    titleField: string;
+    keyField: string;
+    separator: string;
+    checkable: boolean;
+    selectable: boolean;
+    filteredNodeCheckable: boolean;
+    cascade: boolean;
+    enableLeafOnly: boolean;
+    disableAll: boolean;
+    defaultExpandAll: boolean;
+    defaultExpandedKeys: () => never[];
+    expandedKeys: () => never[];
+    draggable: boolean;
+    droppable: boolean;
+    beforeDropMethod: () => () => boolean;
+    ignoreMode: import("../constants").ignoreEnum;
+    autoLoad: boolean;
+    expandOnFilter: boolean;
+    unselectOnClick: boolean;
+    loading: boolean;
+    nodeMinHeight: number;
+    nodeIndent: number;
+    renderNodeAmount: number;
+    bufferNodeAmount: number;
+}>, {
+    setData: (data: import("../types").AnyPropsArrayType) => void;
+    setChecked: (key: TreeNodeKeyType, value: boolean) => void;
+    setCheckedKeys: (keys: TreeNodeKeyType[], value: boolean) => void;
+    checkAll: () => void;
+    clearChecked: () => void;
+    setSelected: (key: TreeNodeKeyType, value: boolean) => void;
+    clearSelected: () => void;
+    setExpand: (key: TreeNodeKeyType, value: boolean, expandParent?: boolean) => void;
+    setExpandKeys: (keys: TreeNodeKeyType[], value: boolean) => void;
+    setExpandAll: (value: boolean) => void;
+    getCheckedNodes: (ignoreMode?: "none" | "parents" | "children" | undefined) => TreeNode[];
+    getCheckedKeys: (ignoreMode?: "none" | "parents" | "children" | undefined) => TreeNodeKeyType[];
+    getIndeterminateNodes: () => TreeNode[];
+    getSelectedNode: () => TreeNode | null;
+    getSelectedKey: () => TreeNodeKeyType | null;
+    getExpandNodes: () => TreeNode[];
+    getExpandKeys: () => TreeNodeKeyType[];
+    getCurrentVisibleNodes: () => TreeNode[];
+    getNode: (key: TreeNodeKeyType) => TreeNode | null;
+    getTreeData: () => TreeNode[];
+    getFlatData: () => TreeNode[];
+    getNodesCount: () => number;
+    insertBefore: (insertedNode: TreeNodeKeyType | import("../store/tree-node.js").ITreeNodeOptions, referenceKey: TreeNodeKeyType) => TreeNode | null;
+    insertAfter: (insertedNode: TreeNodeKeyType | import("../store/tree-node.js").ITreeNodeOptions, referenceKey: TreeNodeKeyType) => TreeNode | null;
+    append: (insertedNode: TreeNodeKeyType | import("../store/tree-node.js").ITreeNodeOptions, parentKey: TreeNodeKeyType) => TreeNode | null;
+    prepend: (insertedNode: TreeNodeKeyType | import("../store/tree-node.js").ITreeNodeOptions, parentKey: TreeNodeKeyType) => TreeNode | null;
+    remove: (removedKey: TreeNodeKeyType) => TreeNode | null;
+    filter: (keyword: string, filterMethod?: import("../store/tree-store.js").FilterFunctionType | undefined) => void;
+    showCheckedNodes: (showUnloadCheckedNodes?: boolean | undefined) => void;
+    loadRootNodes: () => Promise<void>;
+    scrollTo: (key: TreeNodeKeyType, verticalPosition?: number | "bottom" | "top" | "center") => void;
+    clearKeyword: () => void;
+    getKeyword: () => string;
+    search: (keyword1?: string | undefined) => Promise<void>;
+}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+    [x: string]: (...args: any[]) => void;
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<TreeDropProps>, {
+    dropHeight: number;
+    dropDisabled: boolean;
+    clearable: boolean;
+    placement: placementEnum;
+    transfer: boolean;
+    dropdownWidthFixed: boolean;
+    searchPlaceholder: string;
+    showCheckAll: boolean;
+    showCheckedButton: boolean;
+    checkedButtonText: string;
+    showFooter: boolean;
+    searchLength: number;
+    searchDisabled: boolean;
+    searchRemote: boolean;
+    searchDebounceTime: number;
+    data: () => never[];
+    unloadDataList: () => never[];
+    showUnloadCheckedNodes: boolean;
+    emptyText: string;
+    titleField: string;
+    keyField: string;
+    separator: string;
+    checkable: boolean;
+    selectable: boolean;
+    filteredNodeCheckable: boolean;
+    cascade: boolean;
+    enableLeafOnly: boolean;
+    disableAll: boolean;
+    defaultExpandAll: boolean;
+    defaultExpandedKeys: () => never[];
+    expandedKeys: () => never[];
+    draggable: boolean;
+    droppable: boolean;
+    beforeDropMethod: () => () => boolean;
+    ignoreMode: import("../constants").ignoreEnum;
+    autoLoad: boolean;
+    expandOnFilter: boolean;
+    unselectOnClick: boolean;
+    loading: boolean;
+    nodeMinHeight: number;
+    nodeIndent: number;
+    renderNodeAmount: number;
+    bufferNodeAmount: number;
+}>>>, {
+    keyField: string;
+    ignoreMode: "none" | "parents" | "children";
+    filteredNodeCheckable: boolean;
+    cascade: boolean;
+    defaultExpandAll: boolean;
+    expandOnFilter: boolean;
+    data: import("../types").AnyPropsArrayType;
+    titleField: string;
+    checkable: boolean;
+    selectable: boolean;
+    unselectOnClick: boolean;
+    disableAll: boolean;
+    draggable: boolean;
+    droppable: boolean;
+    nodeIndent: number;
+    emptyText: string;
+    separator: string;
+    showUnloadCheckedNodes: boolean;
+    unloadDataList: import("../types").AnyPropsArrayType;
+    enableLeafOnly: boolean;
+    defaultExpandedKeys: TreeNodeKeyType[];
+    expandedKeys: TreeNodeKeyType[];
+    beforeDropMethod: (dragKey: TreeNodeKeyType, dropKey: TreeNodeKeyType, hoverPart: import("../constants").dragHoverPartEnum) => boolean;
+    autoLoad: boolean;
+    loading: boolean;
+    renderNodeAmount: number;
+    nodeMinHeight: number;
+    bufferNodeAmount: number;
+    searchPlaceholder: string;
+    showCheckAll: boolean;
+    showCheckedButton: boolean;
+    checkedButtonText: string;
+    showFooter: boolean;
+    searchLength: number;
+    searchDisabled: boolean;
+    searchRemote: boolean;
+    searchDebounceTime: number;
+    dropHeight: number;
+    dropDisabled: boolean;
+    clearable: boolean;
+    placement: "bottom-start" | "bottom-end" | "bottom" | "top-start" | "top-end" | "top";
+    transfer: boolean;
+    dropdownWidthFixed: boolean;
+}, {}>, Partial<Record<NonNullable<string | number>, (_: any) => any>> & {
+    default?(_: {
         checkedNodes: {
             [x: string]: any;
             _level: number;
@@ -68,7 +255,7 @@ declare const _default: import("vue-demi").DefineComponent<{
             _loaded: boolean;
             readonly _keyField: string;
             readonly _remote: boolean;
-            setChildren: (children: import("../store/tree-node").ITreeNodeOptions[]) => void;
+            setChildren: (children: import("../store/tree-node.js").ITreeNodeOptions[]) => void;
         }[];
         checkedKeys: TreeNodeKeyType[];
         selectedNode?: {
@@ -88,91 +275,74 @@ declare const _default: import("vue-demi").DefineComponent<{
             _loaded: boolean;
             readonly _keyField: string;
             readonly _remote: boolean;
-            setChildren: (children: import("../store/tree-node").ITreeNodeOptions[]) => void;
+            setChildren: (children: import("../store/tree-node.js").ITreeNodeOptions[]) => void;
         } | undefined;
         selectedKey?: TreeNodeKeyType | undefined;
-    };
-    wrapperCls: import("vue-demi").ComputedRef<string[]>;
-    referenceCls: import("vue-demi").ComputedRef<string[]>;
-    displayInputCls: import("vue-demi").ComputedRef<(string | {
-        [x: string]: boolean;
-    })[]>;
-    displayInputTextCls: import("vue-demi").ComputedRef<(string | {
-        [x: string]: boolean;
-    })[]>;
-    dropIconCls: import("vue-demi").ComputedRef<(string | {
-        [x: string]: boolean;
-    })[]>;
-    clearIconCls: import("vue-demi").ComputedRef<string[]>;
-    dropdownCls: import("vue-demi").ComputedRef<(string | undefined)[]>;
-    checkable: import("vue-demi").ComputedRef<boolean>;
-    selectable: import("vue-demi").ComputedRef<boolean>;
-    displayValue: import("vue-demi").ComputedRef<string>;
-    showClearIcon: import("vue-demi").ComputedRef<boolean>;
-    referenceRef: import("vue-demi").Ref<any>;
-    dropdownRef: import("vue-demi").Ref<any>;
-    treeSearchRef: import("vue-demi").Ref<any>;
-    locateDropdown: () => void;
-    handleRefClick: () => void;
-    handleDocumentClick: (e: MouseEvent) => void;
-    handleClear: () => void;
-    handleCheckedChange: (nodes: TreeNode[], keys: TreeNodeKeyType[]) => void;
-    handleSelectedChange: (node?: TreeNode, key?: TreeNodeKeyType) => void;
-    handleSetData: () => void;
-}, unknown, {}, {}, import("vue-demi").ComponentOptionsMixin, import("vue-demi").ComponentOptionsMixin, ("checked-change" | "update:modelValue" | "clear" | "dropdown-visible-change")[], "checked-change" | "update:modelValue" | "clear" | "dropdown-visible-change", import("vue-demi").VNodeProps & import("vue-demi").AllowedComponentProps & import("vue-demi").ComponentCustomProps, Readonly<import("vue-demi").ExtractPropTypes<{
-    /** 兼容 Vue 2.5.16 bug */
-    modelValue: PropType<string | number | TreeNodeKeyType[]>;
-    /** 下拉内容高度 */
-    dropHeight: {
-        type: NumberConstructor;
-        default: number;
-    };
-    /** 展示输入框 placeholder */
-    dropPlaceholder: {
-        type: StringConstructor;
-    };
-    /** 是否禁用 */
-    dropDisabled: {
-        type: BooleanConstructor;
-        default: boolean;
-    };
-    /** 允许清空 */
-    clearable: {
-        type: BooleanConstructor;
-        default: boolean;
-    };
-    /** 下拉弹出框位置 */
-    placement: {
-        type: PropType<"top" | "bottom" | "bottom-start" | "bottom-end" | "top-start" | "top-end">;
-        default: placementEnum;
-    };
-    /** 将下拉 DOM 转移到 body 中 */
-    transfer: {
-        type: BooleanConstructor;
-        default: boolean;
-    };
-    /** 在下拉框容器上额外添加的 class */
-    dropdownClassName: PropType<string | string[]>;
-    /** 下拉框容器最小宽度，未指定则默认为展示输入框宽度 */
-    dropdownMinWidth: {
-        type: NumberConstructor;
-    };
-    /** 固定下拉框容器宽度，当内容超出最小宽度不会伸长，而是出现横向滚动条 */
-    dropdownWidthFixed: {
-        type: BooleanConstructor;
-        default: boolean;
-    };
-}>> & {
-    "onChecked-change"?: ((...args: any[]) => any) | undefined;
-    "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
-    onClear?: ((...args: any[]) => any) | undefined;
-    "onDropdown-visible-change"?: ((...args: any[]) => any) | undefined;
-}, {
-    dropHeight: number;
-    dropDisabled: boolean;
-    clearable: boolean;
-    placement: "top" | "bottom" | "bottom-start" | "bottom-end" | "top-start" | "top-end";
-    transfer: boolean;
-    dropdownWidthFixed: boolean;
+    }): any;
+    display?(_: {
+        checkedNodes: {
+            [x: string]: any;
+            _level: number;
+            checked: boolean;
+            selected: boolean;
+            indeterminate: boolean;
+            disabled: boolean;
+            expand: boolean;
+            visible: boolean;
+            _filterVisible: boolean;
+            _parent: any | null;
+            children: any[];
+            isLeaf: boolean;
+            _loading: boolean;
+            _loaded: boolean;
+            readonly _keyField: string;
+            readonly _remote: boolean;
+            setChildren: (children: import("../store/tree-node.js").ITreeNodeOptions[]) => void;
+        }[];
+        checkedKeys: TreeNodeKeyType[];
+        selectedNode?: {
+            [x: string]: any;
+            _level: number;
+            checked: boolean;
+            selected: boolean;
+            indeterminate: boolean;
+            disabled: boolean;
+            expand: boolean;
+            visible: boolean;
+            _filterVisible: boolean;
+            _parent: any | null;
+            children: any[];
+            isLeaf: boolean;
+            _loading: boolean;
+            _loaded: boolean;
+            readonly _keyField: string;
+            readonly _remote: boolean;
+            setChildren: (children: import("../store/tree-node.js").ITreeNodeOptions[]) => void;
+        } | undefined;
+        selectedKey?: TreeNodeKeyType | undefined;
+    }): any;
+    clear?(_: {}): any;
 }>;
 export default _default;
+type __VLS_WithDefaults<P, D> = {
+    [K in keyof Pick<P, keyof P>]: K extends keyof D ? __VLS_Prettify<P[K] & {
+        default: D[K];
+    }> : P[K];
+};
+type __VLS_Prettify<T> = {
+    [K in keyof T]: T[K];
+} & {};
+type __VLS_WithTemplateSlots<T, S> = T & {
+    new (): {
+        $slots: S;
+    };
+};
+type __VLS_NonUndefinedable<T> = T extends undefined ? never : T;
+type __VLS_TypePropsToOption<T> = {
+    [K in keyof T]-?: {} extends Pick<T, K> ? {
+        type: import('vue').PropType<__VLS_NonUndefinedable<T[K]>>;
+    } : {
+        type: import('vue').PropType<T[K]>;
+        required: true;
+    };
+};

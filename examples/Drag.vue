@@ -17,7 +17,7 @@
 <script lang="ts">
 import VTree from '../src'
 import treeDataGenerator from '../tests/tree-data-generator'
-import { defineComponent, ref } from 'vue-demi'
+import { defineComponent, ref } from 'vue'
 export default defineComponent({
   name: 'Drag',
   components: {

@@ -18,7 +18,7 @@
 <script lang="ts">
 import { VTreeDrop } from '../src'
 import treeDataGenerator from '../tests/tree-data-generator'
-import { defineComponent, ref, watch } from 'vue-demi'
+import { defineComponent, ref, watch } from 'vue'
 const genData = (extra = {}) => {
   return treeDataGenerator(
     Object.assign(

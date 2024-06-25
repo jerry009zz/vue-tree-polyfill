@@ -6,7 +6,9 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "strict": true,
+    "noImplicitAny": true,
     "jsx": "preserve",
+    "jsxImportSource": "vue",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
@@ -14,10 +16,7 @@
     "skipLibCheck": true,
     "declaration": true,
     "rootDir": "./src",
-    "declarationDir": "types",
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    "declarationDir": "types"
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]
