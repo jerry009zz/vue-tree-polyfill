@@ -50,6 +50,7 @@
                   :data="node"
                   :getNode="getNode"
                   :noSiblingNodeMap="noSiblingNodeMap"
+                  v-on="treeNodeListeners"
                   :class="getNodeClassName(node)"
                   :style="{
                     minHeight: `${nodeMinHeight}px`,
@@ -73,6 +74,7 @@
             :data="node"
             :getNode="getNode"
             :noSiblingNodeMap="noSiblingNodeMap"
+            v-on="treeNodeListeners"
             :class="getNodeClassName(node)"
             :style="{
               minHeight: `${nodeMinHeight}px`,
