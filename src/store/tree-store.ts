@@ -872,7 +872,7 @@ export default class TreeStore extends TreeEventTarget {
     )
     this.insertIntoFlatData(flatIndex, nodes)
 
-    // 更新被移除处父节点状态
+    // 更新插入节点父节点状态
     this.updateMovingNodeStatus(node)
   }
 

@@ -59,7 +59,7 @@ npm install @wsfe/vue-tree
 
 ```typescript
 // 大家可以根据需要是否引入VTreeNode, VTreeSearch, VTreeDrop
-import Vtree, { VTreeNode, VTreeSearch, VTreeDrop } from '@wsfe/vue-tree'
+import VTree, { VTreeNode, VTreeSearch, VTreeDrop } from '@wsfe/vue-tree'
 import '@wsfe/vue-tree/style.css'
 ```
 
