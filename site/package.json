@@ -1,0 +1,9 @@
+{
+  "name": "@wsfe/vue-tree-site",
+  "version": "0.1.0",
+  "type": "module",
+  "dependencies": {
+    "@vue/repl": "^4.2.1",
+    "@wsfe/vue-tree": "^4.0.0"
+  }
+}

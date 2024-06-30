@@ -23,7 +23,10 @@
     "test": "vitest watch",
     "test:ci": "vitest run",
     "prettier": "prettier --write \"{src,examples,tests}/**/*.{ts,js,json,vue,tsx,less,scss,less,html}\" --fix",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "docs:dev": "vitepress dev site",
+    "docs:build": "vitepress build site",
+    "docs:preview": "vitepress preview site"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
@@ -70,6 +73,7 @@
     "prettier": "^3.3.1",
     "typescript": "^5.4.5",
     "vite": "^5.2.13",
+    "vitepress": "^1.2.3",
     "vitest": "^1.6.0",
     "vue": "^3.4.30",
     "vue-tsc": "^2.0.22"
