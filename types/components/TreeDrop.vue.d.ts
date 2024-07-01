@@ -30,6 +30,7 @@ export declare const DEFAULT_TREE_DROP_PROPS: {
     transfer: boolean;
     dropdownWidthFixed: boolean;
     searchPlaceholder: string;
+    /** 处理树数据更新 */
     showCheckAll: boolean;
     showCheckedButton: boolean;
     checkedButtonText: string;
@@ -75,6 +76,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     transfer: boolean;
     dropdownWidthFixed: boolean;
     searchPlaceholder: string;
+    /** 处理树数据更新 */
     showCheckAll: boolean;
     showCheckedButton: boolean;
     checkedButtonText: string;
@@ -113,6 +115,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     bufferNodeAmount: number;
 }>, {
     filter: (keyword: string, filterMethod?: import("../store/tree-store.js").FilterFunctionType | undefined) => void;
+    search: (keyword1?: string | undefined) => Promise<void>;
     setData: (data: import("../types").AnyPropsArrayType) => void;
     setChecked: (key: TreeNodeKeyType, value: boolean) => void;
     setCheckedKeys: (keys: TreeNodeKeyType[], value: boolean) => void;
@@ -143,7 +146,6 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     showCheckedNodes: (showUnloadCheckedNodes?: boolean | undefined) => void;
     loadRootNodes: () => Promise<void>;
     scrollTo: (key: TreeNodeKeyType, verticalPosition?: number | "top" | "center" | "bottom") => void;
-    search: (keyword1?: string | undefined) => Promise<void>;
     clearKeyword: () => void;
     getKeyword: () => string;
 }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
@@ -156,6 +158,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     transfer: boolean;
     dropdownWidthFixed: boolean;
     searchPlaceholder: string;
+    /** 处理树数据更新 */
     showCheckAll: boolean;
     showCheckedButton: boolean;
     checkedButtonText: string;
@@ -193,28 +196,28 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     renderNodeAmount: number;
     bufferNodeAmount: number;
 }>>>, {
+    keyField: string;
+    ignoreMode: "none" | "parents" | "children";
+    filteredNodeCheckable: boolean;
+    cascade: boolean;
+    defaultExpandAll: boolean;
+    expandOnFilter: boolean;
     data: import("../types").AnyPropsArrayType;
     emptyText: string;
     selectable: boolean;
     checkable: boolean;
     separator: string;
-    ignoreMode: "none" | "parents" | "children";
     titleField: string;
-    keyField: string;
     showUnloadCheckedNodes: boolean;
     unloadDataList: import("../types").AnyPropsArrayType;
-    filteredNodeCheckable: boolean;
-    cascade: boolean;
     enableLeafOnly: boolean;
     disableAll: boolean;
-    defaultExpandAll: boolean;
     defaultExpandedKeys: TreeNodeKeyType[];
     expandedKeys: TreeNodeKeyType[];
     draggable: boolean;
     droppable: boolean;
     beforeDropMethod: (dragKey: TreeNodeKeyType, dropKey: TreeNodeKeyType, hoverPart: import("../constants").dragHoverPartEnum) => boolean;
     autoLoad: boolean;
-    expandOnFilter: boolean;
     unselectOnClick: boolean;
     loading: boolean;
     nodeIndent: number;

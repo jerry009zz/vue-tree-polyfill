@@ -22,7 +22,8 @@
     "preview": "vite preview",
     "test": "vitest watch",
     "test:ci": "vitest run",
-    "prettier": "prettier --write \"{src,examples,tests}/**/*.{ts,js,json,vue,tsx,less,scss,less,html}\" --fix"
+    "prettier": "prettier --write \"{src,examples,tests}/**/*.{ts,js,json,vue,tsx,less,scss,less,html}\" --fix",
+    "prepublishOnly": "npm run build"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
