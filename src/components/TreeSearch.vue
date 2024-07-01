@@ -224,11 +224,11 @@ function search(keyword1?: string): Promise<void> {
 //#region Event handlers
 /** 处理全选点击 */
 function handleCheckAll(): void {
-  const keyField = treeRef.value?.keyField
+  const keyField = props.keyField
   if (props.searchDisabled || checkAllStatus.disabled || !treeRef.value || !keyField) return
 
   const currentVisibleKeys = treeRef.value.getCurrentVisibleNodes().map((node: TreeNode) => node[keyField])
-  if (checkAllStatus.checked || checkAllStatus.indeterminate) {
+  if (checkAllStatus.checked) {
     // 反选
     treeRef.value.setCheckedKeys(currentVisibleKeys, false)
   } else {
