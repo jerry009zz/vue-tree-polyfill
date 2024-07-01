@@ -14,8 +14,8 @@
 
 从 `@wsfe/ctree` 或者 `@wsfe/vue-tree` 3.x 迁移到 `@wsfe/vue-tree` 4.x 需按如下步骤修改：
 
-1. 所有 Less 变量与 CSS 相关 class 前缀从 ctree 改为 vtree
-2. 导出的包前缀从 C 改为 V，例如：
+1. 所有 Less 变量与 CSS 相关 class 前缀从 `ctree` 改为 `vtree`
+2. 导出的包前缀从 `C` 改为 `V`，例如：
 
 ```typescript
 import CTree, { CTreeSearch, CTreeDrop } from '@wsfe/ctree' // [!code --]

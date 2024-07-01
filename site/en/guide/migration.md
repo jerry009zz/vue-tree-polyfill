@@ -14,8 +14,8 @@ Vue support info:
 
 To migrate from `@wsfe/ctree` or `@wsfe/vue-tree` 3.x to `@wsfe/vue-tree` 4.x, follow these steps:
 
-1. Update all Less variables and CSS related class prefix from ctree to vtree
-2. Change the prefix of exported modules from C to V
+1. Update all Less variables and CSS related class prefix from `ctree` to `vtree`
+2. Change the prefix of exported modules from `C` to `V`
 
 ```typescript
 import CTree, { CTreeSearch, CTreeDrop } from '@wsfe/ctree' // [!code --]
