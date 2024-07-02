@@ -7,5 +7,9 @@ sidebar: false
 <Playground/>
 
 <script setup lang="ts">
-import Playground from './.vitepress/components/Playground.vue'
+import { defineClientComponent } from 'vitepress'
+
+const Playground = defineClientComponent(() => {
+  return import('./.vitepress/components/Playground.vue')
+})
 </script>

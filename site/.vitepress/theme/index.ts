@@ -9,18 +9,17 @@ const codeDemoComponents = import.meta.glob('../code/*.vue')
 
 export default {
   extends: DefaultTheme,
-  enhanceApp({ app }) {
+  async enhanceApp({ app }) {
     // 注册自定义全局组件
     app.component('CodeDemo', CodeDemo)
     app.component('PlaygroundLink', PlaygroundLink)
     
     for (const path in codeDemoComponents) {
-      codeDemoComponents[path]().then((component) => {
-        const componentName = path.match(/^(?:.*\/)?(.+)\.vue$/)?.[1]
-        if (componentName && component?.default) {
-          app.component(componentName, component.default)
-        }
-      })
+      const component = await codeDemoComponents[path]()
+      const componentName = path.match(/^(?:.*\/)?(.+)\.vue$/)?.[1]
+      if (componentName && component?.default) {
+        app.component(componentName, component.default)
+      }
     }
   }
 } satisfies Theme

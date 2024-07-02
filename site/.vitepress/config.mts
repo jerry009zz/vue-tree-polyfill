@@ -4,6 +4,7 @@ import en from './en.mjs'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  base: '/vue-tree/',
   title: "Vue Tree",
   description: "Virtual list optimized Vue tree component",
   appearance: false,

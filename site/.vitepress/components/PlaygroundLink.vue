@@ -1,10 +1,10 @@
 <template>
-  <a :href="`/playground${serializedCode}`" target="_blank" rel="noreferrer noopener">{{ text || i18n.openInPlayground }}</a>
+  <a :href="withBase(`/playground${serializedCode}`)" target="_blank" rel="noreferrer noopener">{{ text || i18n.openInPlayground }}</a>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useData } from 'vitepress'
+import { withBase, useData } from 'vitepress'
 import { useStore } from '@vue/repl'
 
 import { data as sourceCodeMap } from '../data/code.data'
