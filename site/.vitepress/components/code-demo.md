@@ -7,12 +7,16 @@
     border: '1px solid lightgray',
   }"
 >
-  <component :is="component" />
+  <ClientOnly>
+    <component :is="component" />
+  </ClientOnly>
 </div>
 
-<p>
-  <PlaygroundLink :component="component" />
-</p>
+<div :style="{ margin: '16px 0' }">
+  <ClientOnly>
+    <PlaygroundLink :component="component" />
+  </ClientOnly>
+</div>
 
 ::: details {{i18n.showCode}}
 <div v-html="sourceCode.markdown"></div>
