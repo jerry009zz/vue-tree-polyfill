@@ -4,7 +4,9 @@ navbar: false
 sidebar: false
 ---
 
-<Playground/>
+<ClientOnly>
+  <Playground/>
+</ClientOnly>
 
 <script setup lang="ts">
 import { defineClientComponent } from 'vitepress'

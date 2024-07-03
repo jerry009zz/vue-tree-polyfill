@@ -1,22 +1,22 @@
-<div
-  :style="{
-    width: '100%',
-    borderRadius: '8px',
-    padding: '20px',
-    backgroundColor: '#FFF',
-    border: '1px solid lightgray',
-  }"
->
-  <ClientOnly>
+<ClientOnly>
+  <div
+    :style="{
+      width: '100%',
+      borderRadius: '8px',
+      padding: '20px',
+      backgroundColor: '#FFF',
+      border: '1px solid lightgray',
+    }"
+  >
     <component :is="component" />
-  </ClientOnly>
-</div>
+  </div>
+</ClientOnly>
 
-<div :style="{ margin: '16px 0' }">
-  <ClientOnly>
-    <PlaygroundLink :component="component" />
-  </ClientOnly>
-</div>
+<ClientOnly>
+  <div :style="{ margin: '16px 0' }">
+      <PlaygroundLink :component="component" />
+  </div>
+</ClientOnly>
 
 ::: details {{i18n.showCode}}
 <div v-html="sourceCode.markdown"></div>

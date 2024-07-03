@@ -2,7 +2,9 @@
 
 ## 在线尝试 {#try-it-online}
 
-<div>前往 <PlaygroundLink component="DataDisplay" text="Playground" /> 在线尝试</div>
+<ClientOnly>
+  <div>前往 <PlaygroundLink component="DataDisplay" text="Playground" /> 在线尝试</div>
+</ClientOnly>
 
 ## 安装 {#install}
 
