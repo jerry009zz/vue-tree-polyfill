@@ -14,7 +14,7 @@
 
 <ClientOnly>
   <div :style="{ margin: '16px 0' }">
-      <PlaygroundLink :component="component" />
+    <PlaygroundLink :component="component" />
   </div>
 </ClientOnly>
 

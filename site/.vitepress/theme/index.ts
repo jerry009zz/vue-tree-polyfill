@@ -5,14 +5,14 @@ import CodeDemo from '../components/code-demo.md'
 import PlaygroundLink from '../components/PlaygroundLink.vue'
 import '@wsfe/vue-tree/style.css'
 
-const codeDemoComponents = import.meta.glob('../code/*.vue')
-
 export default {
   extends: DefaultTheme,
   async enhanceApp({ app }) {
     // 注册自定义全局组件
     app.component('CodeDemo', CodeDemo)
     app.component('PlaygroundLink', PlaygroundLink)
+
+    const codeDemoComponents = import.meta.glob('../code/*.vue')
     
     for (const path in codeDemoComponents) {
       const component = await codeDemoComponents[path]()
