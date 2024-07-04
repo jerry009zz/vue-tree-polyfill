@@ -2,9 +2,7 @@
 
 ## Try It Online {#try-it-online}
 
-<ClientOnly>
-  <div>Refer to <PlaygroundLink component="DataDisplay" text="Playground" /> to try it online</div>
-</ClientOnly>
+<div>Refer to <PlaygroundLink component="DataDisplay" text="Playground" /> to try it online</div>
 
 ## Install {#install}
 

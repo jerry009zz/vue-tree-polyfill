@@ -1,17 +1,17 @@
 <Suspense>
   <DemoRender :component="component" />
+
+  <template #fallback>
+    Loading demo...
+  </template>
 </Suspense>
 
-<ClientOnly>
-  <div :style="{ margin: '16px 0' }">
-    <PlaygroundLink :component="component" />
-  </div>
-</ClientOnly>
+<div :style="{ margin: '16px 0' }">
+  <PlaygroundLink :component="component" />
+</div>
 
 ::: details {{i18n.showCode}}
-<ClientOnly>
-  <div v-html="sourceCode.markdown"></div>
-</ClientOnly>
+<div v-html="sourceCode.markdown"></div>
 :::
 
 <script setup lang="ts">
