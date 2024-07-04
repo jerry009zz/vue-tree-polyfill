@@ -1,16 +1,6 @@
-<ClientOnly>
-  <div
-    :style="{
-      width: '100%',
-      borderRadius: '8px',
-      padding: '20px',
-      backgroundColor: '#FFF',
-      border: '1px solid lightgray',
-    }"
-  >
-    <component :is="component" />
-  </div>
-</ClientOnly>
+<Suspense>
+  <DemoRender :component="component" />
+</Suspense>
 
 <ClientOnly>
   <div :style="{ margin: '16px 0' }">
@@ -28,6 +18,7 @@
 import { ref } from 'vue'
 import { useData } from 'vitepress'
 
+import DemoRender from './DemoRender.vue'
 import PlaygroundLink from './PlaygroundLink.vue'
 import { data as sourceCodeMap } from '../data/code.data'
 import { codeDemoI18n } from '../constants/i18n'
