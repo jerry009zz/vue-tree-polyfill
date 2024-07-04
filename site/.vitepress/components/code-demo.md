@@ -19,7 +19,9 @@
 </ClientOnly>
 
 ::: details {{i18n.showCode}}
-<div v-html="sourceCode.markdown"></div>
+<ClientOnly>
+  <div v-html="sourceCode.markdown"></div>
+</ClientOnly>
 :::
 
 <script setup lang="ts">
