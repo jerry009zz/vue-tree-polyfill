@@ -8,6 +8,20 @@ export default defineConfig({
   title: "Vue Tree",
   description: "Virtual list optimized Vue tree component",
   appearance: false,
+  head: [
+    [
+      'script',
+      { async: '', src: 'https://www.googletagmanager.com/gtag/js?id=G-BBCLLNZQ2E' }
+    ],
+    [
+      'script',
+      {},
+      `window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BBCLLNZQ2E');`
+    ]
+  ],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     search: {
