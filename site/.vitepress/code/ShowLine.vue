@@ -19,6 +19,12 @@
       <input type="radio" id="showline-polyline-false" :value="false" v-model="polyline" />
       <label for="showline-polyline-false">false</label>
     </div>
+
+    <div v-if="type === 'dashed'">
+      <span>showLine.dashDensity: </span>
+      <input type="range" :min="1" :max="10" :step="1" v-model.number="dashDensity" />
+      <span>{{ dashDensity }}</span>
+    </div>
   </div>
   <VTree :data="data" :showLine="showLine" animation defaultExpandAll />
 </template>
@@ -29,11 +35,13 @@ import VTree from '@wsfe/vue-tree'
 
 const type = ref('solid')
 const polyline = ref(false)
+const dashDensity = ref(3)
 
 const showLine = computed(() => {
   return {
     type: type.value,
     polyline: polyline.value,
+    dashDensity: dashDensity.value,
   }
 })
 
