@@ -39,6 +39,8 @@ export const TREE_API_METHODS = [
   'filter',
   'showCheckedNodes',
   'loadRootNodes',
+  'updateNode',
+  'updateNodes',
   'scrollTo'
 ] as const
 

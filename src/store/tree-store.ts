@@ -518,6 +518,58 @@ export default class TreeStore extends TreeEventTarget {
     }
   }
 
+  updateNode(key: TreeNodeKeyType, newNode: ITreeNodeOptions, triggerDataChange = true) {
+    if (!this.mapData[key]) return
+
+    const newNodeCopy: ITreeNodeOptions = {}
+    const notAllowedFields = [
+      this.options.keyField,
+      'indeterminate',
+      'visible',
+      'isLeaf',
+    ]
+
+    // Exclude key field and fields starting with '_'
+    Object.keys(newNode).forEach((field) => {
+      if (!field.startsWith('_') && !notAllowedFields.includes(field)) {
+        newNodeCopy[field] = newNode[field]
+      }
+    })
+
+    if (Array.isArray(newNodeCopy.children)) {
+      this.mapData[key].setChildren(newNodeCopy.children)
+      delete newNodeCopy.children
+    }
+    if ('checked' in newNodeCopy) {
+      this.setChecked(key, newNodeCopy.checked, false, false)
+      delete newNodeCopy.checked
+    }
+    if ('selected' in newNodeCopy) {
+      this.setSelected(key, newNodeCopy.selected, false, false)
+      delete newNodeCopy.selected
+    }
+    if ('expand' in newNodeCopy) {
+      this.setExpand(key, newNodeCopy.expand, false, false, false)
+      delete newNodeCopy.expand
+    }
+    Object.keys(newNodeCopy).forEach((field) => {
+      this.mapData[key][field] = newNodeCopy[field]
+    })
+
+    if (triggerDataChange) {
+      this.emit('visible-data-change')
+    }
+  }
+
+  updateNodes(newNodes: ITreeNodeOptions[]) {
+    const validNodes = newNodes.filter((node) => node[this.options.keyField] != null)
+    validNodes.forEach((node) => {
+      this.updateNode(node[this.options.keyField], node, false)
+    })
+
+    this.emit('visible-data-change')
+  }
+
   //#endregion Set api
 
   //#region Get api
