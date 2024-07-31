@@ -232,11 +232,29 @@ export default class TreeStore extends TreeEventTarget {
    * @param triggerDataChange 是否触发视图刷新
    */
   private triggerCheckedChange(
-    triggerEvent: boolean = true,
-    triggerDataChange: boolean = true
+    triggerEvent = true,
+    triggerDataChange = true,
   ) {
     if (triggerEvent) {
       this.emit('checked-change', this.getCheckedNodes(), this.getCheckedKeys())
+    }
+
+    if (triggerDataChange) {
+      this.emit('render-data-change')
+    }
+  }
+
+  /**
+   * 触发 selected-change 的快捷方法
+   * @param triggerEvent 是否触发事件
+   * @param triggerDataChange 是否触发视图刷新
+   */
+  private triggerSelectedChange(
+    triggerEvent = true,
+    triggerDataChange = true,
+  ) {
+    if (triggerEvent) {
+      this.emit('selected-change', this.getSelectedNode(), this.getSelectedKey())
     }
 
     if (triggerDataChange) {
@@ -294,17 +312,9 @@ export default class TreeStore extends TreeEventTarget {
       } else {
         this.emit('unselect', node)
       }
-
-      this.emit(
-        'selected-change',
-        this.getSelectedNode(),
-        this.getSelectedKey()
-      )
     }
 
-    if (triggerDataChange) {
-      this.emit('render-data-change')
-    }
+    this.triggerSelectedChange(triggerEvent, triggerDataChange)
   }
 
   /**
@@ -327,17 +337,7 @@ export default class TreeStore extends TreeEventTarget {
       }
     }
 
-    if (triggerEvent) {
-      this.emit(
-        'selected-change',
-        this.getSelectedNode(),
-        this.getSelectedKey()
-      )
-    }
-
-    if (triggerDataChange) {
-      this.emit('render-data-change')
-    }
+    this.triggerSelectedChange(triggerEvent, triggerDataChange)
   }
 
   /**
@@ -359,17 +359,7 @@ export default class TreeStore extends TreeEventTarget {
     } else if (this.unloadSelectedKey !== null) {
       this.unloadSelectedKey = null
 
-      if (triggerEvent) {
-        this.emit(
-          'selected-change',
-          this.getSelectedNode(),
-          this.getSelectedKey()
-        )
-      }
-
-      if (triggerDataChange) {
-        this.emit('render-data-change')
-      }
+      this.triggerSelectedChange(triggerEvent, triggerDataChange)
     }
   }
 
@@ -518,7 +508,7 @@ export default class TreeStore extends TreeEventTarget {
     }
   }
 
-  updateNode(key: TreeNodeKeyType, newNode: ITreeNodeOptions, triggerDataChange = true) {
+  updateNode(key: TreeNodeKeyType, newNode: ITreeNodeOptions, triggerEvent = true, triggerDataChange = true) {
     if (!this.mapData[key]) return
 
     const newNodeCopy: ITreeNodeOptions = {}
@@ -536,8 +526,25 @@ export default class TreeStore extends TreeEventTarget {
       }
     })
 
-    if (Array.isArray(newNodeCopy.children)) {
-      this.mapData[key].setChildren(newNodeCopy.children)
+    const previousCheckedKeys = this.getCheckedKeys()
+    const previousSelectedKey = this.getSelectedKey()
+
+    if ('children' in newNodeCopy) {
+      // remove all children
+      const childKeys = this.mapData[key].children.map((child) => child[this.options.keyField])
+      childKeys.forEach((childKey) => {
+        // TODO: 重新写一个批量移除 children 的函数
+        this.remove(childKey, false, false)
+      })
+
+      // add new children
+      if (Array.isArray(newNodeCopy.children)) {
+        newNodeCopy.children.forEach((child) => {
+          // TODO: 批量添加抽离 setExpand 中 load children 的逻辑
+          this.append(child, key, false, false)
+        })
+      }
+
       delete newNodeCopy.children
     }
     if ('checked' in newNodeCopy) {
@@ -556,6 +563,19 @@ export default class TreeStore extends TreeEventTarget {
       this.mapData[key][field] = newNodeCopy[field]
     })
 
+    const currentCheckedKeys = this.getCheckedKeys()
+    const currentSelectedKey = this.getSelectedKey()
+
+    if (triggerEvent) {
+      if (JSON.stringify(currentCheckedKeys.sort()) !== JSON.stringify(previousCheckedKeys.sort())) {
+        this.triggerCheckedChange(true, false)
+      }
+
+      if (currentSelectedKey !== previousSelectedKey) {
+        this.triggerSelectedChange(true, false)
+      }
+    }
+
     if (triggerDataChange) {
       this.emit('visible-data-change')
     }
@@ -563,9 +583,25 @@ export default class TreeStore extends TreeEventTarget {
 
   updateNodes(newNodes: ITreeNodeOptions[]) {
     const validNodes = newNodes.filter((node) => node[this.options.keyField] != null)
+    if (!validNodes.length) return
+
+    const previousCheckedKeys = this.getCheckedKeys()
+    const previousSelectedKey = this.getSelectedKey()
+
     validNodes.forEach((node) => {
-      this.updateNode(node[this.options.keyField], node, false)
+      this.updateNode(node[this.options.keyField], node, false, false)
     })
+
+    const currentCheckedKeys = this.getCheckedKeys()
+    const currentSelectedKey = this.getSelectedKey()
+
+    if (JSON.stringify(currentCheckedKeys.sort()) !== JSON.stringify(previousCheckedKeys.sort())) {
+      this.triggerCheckedChange(true, false)
+    }
+
+    if (currentSelectedKey !== previousSelectedKey) {
+      this.triggerSelectedChange(true, false)
+    }
 
     this.emit('visible-data-change')
   }
@@ -670,12 +706,14 @@ export default class TreeStore extends TreeEventTarget {
 
   insertBefore(
     insertedNode: TreeNodeKeyType | ITreeNodeOptions,
-    referenceKey: TreeNodeKeyType
+    referenceKey: TreeNodeKeyType,
+    triggerEvent = true,
+    triggerDataChange = true,
   ): TreeNode | null {
     const node = this.getInsertedNode(insertedNode, referenceKey)
     if (!node) return null
 
-    this.remove(node[this.options.keyField], false)
+    this.remove(node[this.options.keyField], false, false)
 
     const referenceNode = this.mapData[referenceKey]
     const parentNode = referenceNode._parent
@@ -688,19 +726,25 @@ export default class TreeStore extends TreeEventTarget {
     const dataIndex =
       (parentNode && -1) || this.findIndex(referenceKey, this.data)
 
-    this.insertIntoStore(node, parentNode, childIndex, flatIndex, dataIndex)
-    this.emit('visible-data-change')
+    this.insertIntoStore(node, parentNode, childIndex, flatIndex, dataIndex, triggerEvent, triggerDataChange)
+
+    if (triggerDataChange) {
+      this.emit('visible-data-change')
+    }
+
     return node
   }
 
   insertAfter(
     insertedNode: TreeNodeKeyType | ITreeNodeOptions,
-    referenceKey: TreeNodeKeyType
+    referenceKey: TreeNodeKeyType,
+    triggerEvent = true,
+    triggerDataChange = true,
   ): TreeNode | null {
     const node = this.getInsertedNode(insertedNode, referenceKey)
     if (!node) return null
 
-    this.remove(node[this.options.keyField], false)
+    this.remove(node[this.options.keyField], false, false)
 
     const referenceNode = this.mapData[referenceKey]
     const parentNode = referenceNode._parent
@@ -726,57 +770,77 @@ export default class TreeStore extends TreeEventTarget {
     const dataIndex =
       (parentNode && -1) || this.findIndex(referenceKey, this.data) + 1
 
-    this.insertIntoStore(node, parentNode, childIndex, flatIndex, dataIndex)
-    this.emit('visible-data-change')
+    this.insertIntoStore(node, parentNode, childIndex, flatIndex, dataIndex, triggerEvent, triggerDataChange)
+
+    if (triggerDataChange) {
+      this.emit('visible-data-change')
+    }
+
     return node
   }
 
   append(
     insertedNode: TreeNodeKeyType | ITreeNodeOptions,
-    parentKey: TreeNodeKeyType
+    parentKey: TreeNodeKeyType,
+    triggerEvent = true,
+    triggerDataChange = true,
   ): TreeNode | null {
     const parentNode = this.mapData[parentKey]
     if (!parentNode.isLeaf) {
       const childrenLength = parentNode.children.length
       return this.insertAfter(
         insertedNode,
-        parentNode.children[childrenLength - 1][this.options.keyField]
+        parentNode.children[childrenLength - 1][this.options.keyField],
+        triggerEvent,
+        triggerDataChange,
       )
     }
 
     const node = this.getInsertedNode(insertedNode, parentKey, true)
     if (!node) return null
 
-    this.remove(node[this.options.keyField], false)
+    this.remove(node[this.options.keyField], false, false)
 
     const flatIndex = this.findIndex(parentKey) + 1
 
-    this.insertIntoStore(node, parentNode, 0, flatIndex)
-    this.emit('visible-data-change')
+    this.insertIntoStore(node, parentNode, 0, flatIndex, undefined, triggerEvent, triggerDataChange)
+
+    if (triggerDataChange) {
+      this.emit('visible-data-change')
+    }
+
     return node
   }
 
   prepend(
     insertedNode: TreeNodeKeyType | ITreeNodeOptions,
-    parentKey: TreeNodeKeyType
+    parentKey: TreeNodeKeyType,
+    triggerEvent = true,
+    triggerDataChange = true,
   ): TreeNode | null {
     const parentNode = this.mapData[parentKey]
     if (!parentNode.isLeaf) {
       return this.insertBefore(
         insertedNode,
-        parentNode.children[0][this.options.keyField]
+        parentNode.children[0][this.options.keyField],
+        triggerEvent,
+        triggerDataChange,
       )
     }
 
     const node = this.getInsertedNode(insertedNode, parentKey, true)
     if (!node) return null
 
-    this.remove(node[this.options.keyField], false)
+    this.remove(node[this.options.keyField], false, false)
 
     const flatIndex = this.findIndex(parentKey) + 1
 
-    this.insertIntoStore(node, parentNode, 0, flatIndex)
-    this.emit('visible-data-change')
+    this.insertIntoStore(node, parentNode, 0, flatIndex, undefined, triggerEvent, triggerDataChange)
+
+    if (triggerDataChange) {
+      this.emit('visible-data-change')
+    }
+
     return node
   }
 
@@ -786,7 +850,8 @@ export default class TreeStore extends TreeEventTarget {
    */
   remove(
     removedKey: TreeNodeKeyType,
-    triggerDataChange: boolean = true
+    triggerEvent: boolean = true,
+    triggerDataChange: boolean = true,
   ): TreeNode | null {
     const node = this.mapData[removedKey]
     if (!node) return null
@@ -833,7 +898,7 @@ export default class TreeStore extends TreeEventTarget {
         node._parent.indeterminate = false
       }
       // 更新被移除处父节点状态
-      this.updateMovingNodeStatus(node)
+      this.updateMovingNodeStatus(node, triggerEvent, triggerDataChange)
     }
 
     if (triggerDataChange) {
@@ -885,7 +950,9 @@ export default class TreeStore extends TreeEventTarget {
     parentNode: TreeNode | null,
     childIndex: number,
     flatIndex: number,
-    dataIndex?: number
+    dataIndex?: number,
+    triggerEvent = true,
+    triggerDataChange = true,
   ): void {
     if (flatIndex === -1) return
 
@@ -925,16 +992,16 @@ export default class TreeStore extends TreeEventTarget {
     this.insertIntoFlatData(flatIndex, nodes)
 
     // 更新插入节点父节点状态
-    this.updateMovingNodeStatus(node)
+    this.updateMovingNodeStatus(node, triggerEvent, triggerDataChange)
   }
 
-  private updateMovingNodeStatus(movingNode: TreeNode): void {
+  private updateMovingNodeStatus(movingNode: TreeNode, triggerEvent = true, triggerDataChange = true): void {
     // 处理多选
     this.checkNodeUpward(movingNode)
-    this.triggerCheckedChange()
+    this.triggerCheckedChange(triggerEvent, triggerDataChange)
     // 处理单选
     if (movingNode.selected) {
-      this.setSelected(movingNode[this.options.keyField], true)
+      this.setSelected(movingNode[this.options.keyField], true, triggerEvent, triggerDataChange)
     }
   }
 
