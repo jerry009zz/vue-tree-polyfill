@@ -397,23 +397,7 @@ export default class TreeStore extends TreeEventTarget {
           })
             .then(children => {
               if (Array.isArray(children)) {
-                const parentIndex: number = this.findIndex(node)
-                if (parentIndex === -1) return
-                node._loaded = true
-                node.expand = value
-                node.setChildren(children)
-                // 如果单选选中的值为空，则允许后续数据覆盖单选 value
-                const currentCheckedKeys = this.getCheckedKeys()
-                const flattenChildren = this.flattenData(
-                  node.children,
-                  this.getSelectedKey === null
-                )
-                this.insertIntoFlatData(parentIndex + 1, flattenChildren)
-                // 如果有未加载的选中节点，判断其是否已加载
-                this.setUnloadCheckedKeys(currentCheckedKeys)
-                if (this.unloadSelectedKey !== null) {
-                  this.setUnloadSelectedKey(this.unloadSelectedKey)
-                }
+                this.loadChildren(node, children, value)
                 this.emit('set-data')
               }
             })
@@ -531,18 +515,11 @@ export default class TreeStore extends TreeEventTarget {
 
     if ('children' in newNodeCopy) {
       // remove all children
-      const childKeys = this.mapData[key].children.map((child) => child[this.options.keyField])
-      childKeys.forEach((childKey) => {
-        // TODO: 重新写一个批量移除 children 的函数
-        this.remove(childKey, false, false)
-      })
+      this.removeChildren(key, false, false)
 
       // add new children
       if (Array.isArray(newNodeCopy.children)) {
-        newNodeCopy.children.forEach((child) => {
-          // TODO: 批量添加抽离 setExpand 中 load children 的逻辑
-          this.append(child, key, false, false)
-        })
+        this.loadChildren(this.mapData[key], newNodeCopy.children, this.mapData[key].expand)
       }
 
       delete newNodeCopy.children
@@ -906,6 +883,66 @@ export default class TreeStore extends TreeEventTarget {
     }
 
     return node
+  }
+
+  private removeChildren(
+    parentKey: TreeNodeKeyType,
+    triggerEvent: boolean = true,
+    triggerDataChange: boolean = true,
+  ) {
+    const node = this.mapData[parentKey]
+    if (!node || !node.children.length) return null
+
+    const firstChild = node.children[0]
+
+    // 从 flatData 中移除
+    const index = this.findIndex(node)
+    if (index === -1) return null
+    let deleteCount = 0
+    const length = this.flatData.length
+    for (let i = index + 1; i < length; i++) {
+      if (this.flatData[i]._level > node._level) {
+        // 从 mapData 中移除
+        delete this.mapData[this.flatData[i][this.options.keyField]]
+        deleteCount++
+      } else break
+    }
+    this.flatData.splice(index + 1, deleteCount)
+
+    // 从父节点 children 中移除
+    node.children.splice(0, node.children.length)
+    node.isLeaf = true
+    node.indeterminate = false
+
+    // 更新被移除处父节点状态
+    this.updateMovingNodeStatus(firstChild, triggerEvent, triggerDataChange)
+
+    if (triggerDataChange) {
+      this.emit('visible-data-change')
+    }
+
+    return node
+  }
+
+  private loadChildren(node: TreeNode, children: any[], expand: boolean) {
+    const parentIndex: number = this.findIndex(node)
+    if (parentIndex === -1) return
+    node._loaded = true
+    node.expand = expand
+    node.setChildren(children)
+    node.isLeaf = !node.children.length
+    // 如果单选选中的值为空，则允许后续数据覆盖单选 value
+    const currentCheckedKeys = this.getCheckedKeys()
+    const flattenChildren = this.flattenData(
+      node.children,
+      this.getSelectedKey === null
+    )
+    this.insertIntoFlatData(parentIndex + 1, flattenChildren)
+    // 如果有未加载的选中节点，判断其是否已加载
+    this.setUnloadCheckedKeys(currentCheckedKeys)
+    if (this.unloadSelectedKey !== null) {
+      this.setUnloadSelectedKey(this.unloadSelectedKey)
+    }
   }
 
   private getInsertedNode(
