@@ -10,9 +10,9 @@
             width: `${nodeIndent}px`,
           }"
         >
-          <polyline
+          <path
             fill="none"
-            :points="polylinePoints(index === data._level - 1)"
+            :d="polylinePoints(index === data._level - 1)"
             :stroke-width="strokeWidth"
             :stroke="showLineParams.color"
             :stroke-dasharray="strokeDasharray"
@@ -114,14 +114,21 @@ const showLineParams = computed(() => {
     type: showLineType.solid,
     color: '#D3D3D3',
     polyline: false,
+    dashDensity: 3,
   }
   let params: Required<ShowLine> = defaultParams
   if (typeof props.showLine === 'object') {
+    let dashDensity = defaultParams.dashDensity
+    if (typeof props.showLine.dashDensity === 'number' && props.showLine.dashDensity >= 1 && props.showLine.dashDensity <= 10) {
+      dashDensity = props.showLine.dashDensity
+    }
+
     params = {
       width: props.showLine.width ?? defaultParams.width,
       type: props.showLine.type ?? defaultParams.type,
       color: props.showLine.color ?? defaultParams.color,
       polyline: props.showLine.polyline ?? defaultParams.polyline,
+      dashDensity,
     }
   }
   return params
@@ -132,7 +139,7 @@ const strokeWidth = computed(() => showLineParams.value.width * 100 / props.node
 const strokeDasharray = computed(() => {
   switch (showLineParams.value.type) {
     case showLineType.dashed:
-      return '25'
+      return 100 / (showLineParams.value.dashDensity * 2)
     default:
       break
   }
@@ -140,10 +147,10 @@ const strokeDasharray = computed(() => {
 })
 
 const polylinePoints = (isDirectParentLine: boolean) => {
-  if (!showLineParams.value.polyline || !isDirectParentLine) return '50,0 50,100'
+  if (!showLineParams.value.polyline || !isDirectParentLine) return 'M50,0 L50,100'
   const parent = props.getNode(props.data[props.keyField])?._parent
-  if (parent && props.noSiblingNodeMap[parent[props.keyField]] && props.noSiblingNodeMap[props.data[props.keyField]]) return '50,0 50,50 100,50 50,50'
-  return '50,0 50,50 100,50 50,50 50,100'
+  if (parent && props.noSiblingNodeMap[parent[props.keyField]] && props.noSiblingNodeMap[props.data[props.keyField]]) return 'M50,0 L50,50 M100,50 L50,50'
+  return 'M50,0 L50,100 M100,50 L50,50'
 }
 
 const {

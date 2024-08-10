@@ -1,3 +1,4 @@
+import path from 'node:path'
 import { defineConfig } from 'vitepress'
 import zh from './zh.mjs'
 import en from './en.mjs'
@@ -30,6 +31,14 @@ export default defineConfig({
     socialLinks: [
       { icon: 'github', link: 'https://github.com/wsfe/vue-tree' }
     ]
+  },
+  vite: {
+    resolve: {
+      alias: {
+        '@wsfe/vue-tree/style.css': path.resolve('src/styles/index.less'),
+        '@wsfe/vue-tree': path.resolve('src'),
+      },
+    },
   },
 
   locales: {

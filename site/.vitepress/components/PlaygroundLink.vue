@@ -1,5 +1,5 @@
 <template>
-  <a :href="withBase(`/playground${serializedCode}`)" target="_blank" rel="noreferrer noopener">{{ text || i18n.openInPlayground }}</a>
+  <a :href="withBase('/playground') + serializedCode" target="_blank" rel="noreferrer noopener">{{ text || i18n.openInPlayground }}</a>
 </template>
 
 <script setup lang="ts">

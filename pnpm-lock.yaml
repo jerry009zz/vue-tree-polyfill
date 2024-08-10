@@ -29,9 +29,6 @@ devDependencies:
   '@vue/vue3-jest':
     specifier: ^29.2.6
     version: 29.2.6(@babel/core@7.24.7)(babel-jest@29.7.0)(jest@29.7.0)(typescript@5.4.5)(vue@3.4.30)
-  '@wsfe/vue-tree':
-    specifier: ^4.0.1
-    version: 4.0.1
   autoprefixer:
     specifier: ^10.4.19
     version: 10.4.19(postcss@8.4.38)
@@ -2860,10 +2857,6 @@ packages:
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
-    dev: true
-
-  /@wsfe/vue-tree@4.0.1:
-    resolution: {integrity: sha512-B3a1bddMfvv2Nzjsw12EOID3ccvvPDiT1GSLY/LFP/S36EvvmMbR5giIj6yhigSpTYNF4j6ORiowMxpwM1Rt6w==}
     dev: true
 
   /abbrev@2.0.0:

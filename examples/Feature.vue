@@ -147,7 +147,7 @@
           <div style="height: 300px">
             <VTree
               :data="showLineTreeData"
-              :showLine="{ type: showLineType, polyline: showLinePolyline }"
+              :showLine="{ type: showLineType, polyline: showLinePolyline, dashDensity }"
               defaultExpandAll
               animation
             />
@@ -169,6 +169,9 @@
               {{ showLineType }}
             </button>
             <p>当前连接线类型：{{showLineType}}</p>
+            <p v-if="showLineType === 'dashed'">
+              虚线密度：<input type="range" v-model.number="dashDensity" :min="1" :max="10" :step="1" /> {{ dashDensity }}
+            </p>
           </div>
           <div class="desc-block">
             showLine.polyline:
@@ -437,6 +440,8 @@ export default defineComponent({
       showLineType.value = type
     }
 
+    const dashDensity = ref(3)
+
     const showLinePolyline = ref(false)
     const onShowLinePolylineBtnClick = (polyline: boolean) => {
       showLinePolyline.value = polyline
@@ -485,6 +490,7 @@ export default defineComponent({
       onShowLineTypeBtnClick,
       showLinePolyline,
       onShowLinePolylineBtnClick,
+      dashDensity,
 
       // 自定义节点
       nodeSlotDescText,
