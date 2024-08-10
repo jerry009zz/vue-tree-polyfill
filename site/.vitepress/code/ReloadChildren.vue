@@ -1,8 +1,9 @@
 <template>
-  <button @click="handleSetChildren">Set node-1 children</button>
   <button @click="handleClearChildren">Clear node-1 children</button>
+  <button @click="handleSetChildren">Set node-1 children</button>
+  <button @click="handleUpdateChildren">Update node-1 children</button>
   <div :style="{ height: '300px' }">
-    <VTree ref="tree" />
+    <VTree ref="tree" checkable selectable />
   </div>
 </template>
 
@@ -46,6 +47,17 @@ const handleSetChildren = () => {
 }
 const handleClearChildren = () => {
   tree.value.updateNode('node-1', { children: [] })
+}
+const handleUpdateChildren = () => {
+  tree.value.updateNode('node-1', {
+    children: children.map((child) => {
+      return {
+        ...child,
+        title: `${child.title} ${Date.now()}`,
+        checked: true,
+      }
+    })
+  })
 }
 </script>
 

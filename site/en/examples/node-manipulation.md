@@ -22,3 +22,23 @@ Enable `draggable` and `droppable`
 - Invoke `remove` to remove a node
 
 <CodeDemo component="NodeCreationAndRemoval" />
+
+## Update Node Title {#update-node-title}
+
+Invoke `updateNode` method to update some fields of tree node
+
+Invoke `updateNodes` to update multiple nodes
+
+<CodeDemo component="UpdateNodeTitle" />
+
+## Update Custom Field {#update-custom-field}
+
+Invoke `updateNode` method to update custom fields in tree node
+
+<CodeDemo component="UpdateCustomField" />
+
+## Reload Child Nodes {#reload-children}
+
+Invoke `updateNode` and pass a new `children` list to reload child nodes
+
+<CodeDemo component="ReloadChildren" />

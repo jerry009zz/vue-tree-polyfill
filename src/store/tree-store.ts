@@ -291,18 +291,15 @@ export default class TreeStore extends TreeEventTarget {
     } else {
       // 设置的节点不是当前已选中节点，要么当前没有选中节点，要么当前有选中节点
       if (value) {
-        if (this.currentSelectedKey === null) {
-          // 当前没有选中节点
-          node.selected = value
-          this.currentSelectedKey = node[this.options.keyField]
-        } else {
+        if (this.currentSelectedKey !== null) {
           // 取消当前已选中，设置新的选中节点
           if (this.mapData[this.currentSelectedKey]) {
             this.mapData[this.currentSelectedKey].selected = false
           }
-          node.selected = value
-          this.currentSelectedKey = node[this.options.keyField]
         }
+        node.selected = value
+        this.currentSelectedKey = node[this.options.keyField]
+        this.unloadSelectedKey = null
       }
     }
 
@@ -327,9 +324,7 @@ export default class TreeStore extends TreeEventTarget {
     triggerDataChange: boolean = true
   ): void {
     if (value) {
-      if (this.currentSelectedKey) {
-        this.setSelected(this.currentSelectedKey, false, false, false)
-      }
+      this.currentSelectedKey = null
       this.unloadSelectedKey = key
     } else {
       if (this.unloadSelectedKey === key) {
@@ -492,8 +487,13 @@ export default class TreeStore extends TreeEventTarget {
     }
   }
 
+  private isChildrenChanged(node: TreeNode, newNode: ITreeNodeOptions): boolean {
+    return ('children' in newNode) && (!!node.children.length || !!newNode.children?.length)
+  }
+
   updateNode(key: TreeNodeKeyType, newNode: ITreeNodeOptions, triggerEvent = true, triggerDataChange = true) {
-    if (!this.mapData[key]) return
+    const node = this.mapData[key]
+    if (!node) return
 
     const newNodeCopy: ITreeNodeOptions = {}
     const notAllowedFields = [
@@ -512,14 +512,15 @@ export default class TreeStore extends TreeEventTarget {
 
     const previousCheckedKeys = this.getCheckedKeys()
     const previousSelectedKey = this.getSelectedKey()
+    let triggerSetDataFlag = this.isChildrenChanged(node, newNodeCopy)
 
-    if ('children' in newNodeCopy) {
+    if (('children' in newNodeCopy) && (!!node.children.length || !!newNodeCopy.children?.length)) {
       // remove all children
       this.removeChildren(key, false, false)
 
       // add new children
       if (Array.isArray(newNodeCopy.children)) {
-        this.loadChildren(this.mapData[key], newNodeCopy.children, this.mapData[key].expand)
+        this.loadChildren(node, newNodeCopy.children, node.expand)
       }
 
       delete newNodeCopy.children
@@ -537,7 +538,7 @@ export default class TreeStore extends TreeEventTarget {
       delete newNodeCopy.expand
     }
     Object.keys(newNodeCopy).forEach((field) => {
-      this.mapData[key][field] = newNodeCopy[field]
+      node[field] = newNodeCopy[field]
     })
 
     const currentCheckedKeys = this.getCheckedKeys()
@@ -554,6 +555,9 @@ export default class TreeStore extends TreeEventTarget {
     }
 
     if (triggerDataChange) {
+      if (triggerSetDataFlag) {
+        this.emit('set-data')
+      }
       this.emit('visible-data-change')
     }
   }
@@ -564,9 +568,15 @@ export default class TreeStore extends TreeEventTarget {
 
     const previousCheckedKeys = this.getCheckedKeys()
     const previousSelectedKey = this.getSelectedKey()
+    let triggerSetDataFlag = false
 
-    validNodes.forEach((node) => {
-      this.updateNode(node[this.options.keyField], node, false, false)
+    validNodes.forEach((newNode) => {
+      const key = newNode[this.options.keyField]
+      const node = this.mapData[key]
+      if (node) {
+        triggerSetDataFlag = triggerSetDataFlag || this.isChildrenChanged(node, newNode)
+        this.updateNode(key, newNode, false, false)
+      }
     })
 
     const currentCheckedKeys = this.getCheckedKeys()
@@ -578,6 +588,10 @@ export default class TreeStore extends TreeEventTarget {
 
     if (currentSelectedKey !== previousSelectedKey) {
       this.triggerSelectedChange(true, false)
+    }
+
+    if (triggerSetDataFlag) {
+      this.emit('set-data')
     }
 
     this.emit('visible-data-change')
@@ -894,6 +908,7 @@ export default class TreeStore extends TreeEventTarget {
     if (!node || !node.children.length) return null
 
     const firstChild = node.children[0]
+    let movingNode = firstChild
 
     // 从 flatData 中移除
     const index = this.findIndex(node)
@@ -905,6 +920,11 @@ export default class TreeStore extends TreeEventTarget {
         // 从 mapData 中移除
         delete this.mapData[this.flatData[i][this.options.keyField]]
         deleteCount++
+
+        // 如果是 Selected 的节点，则记录
+        if (this.flatData[i].selected) {
+          movingNode = this.flatData[i]
+        }
       } else break
     }
     this.flatData.splice(index + 1, deleteCount)
@@ -915,7 +935,7 @@ export default class TreeStore extends TreeEventTarget {
     node.indeterminate = false
 
     // 更新被移除处父节点状态
-    this.updateMovingNodeStatus(firstChild, triggerEvent, triggerDataChange)
+    this.updateMovingNodeStatus(movingNode, triggerEvent, triggerDataChange)
 
     if (triggerDataChange) {
       this.emit('visible-data-change')
@@ -935,7 +955,7 @@ export default class TreeStore extends TreeEventTarget {
     const currentCheckedKeys = this.getCheckedKeys()
     const flattenChildren = this.flattenData(
       node.children,
-      this.getSelectedKey === null
+      this.getSelectedKey() === null
     )
     this.insertIntoFlatData(parentIndex + 1, flattenChildren)
     // 如果有未加载的选中节点，判断其是否已加载
@@ -943,6 +963,8 @@ export default class TreeStore extends TreeEventTarget {
     if (this.unloadSelectedKey !== null) {
       this.setUnloadSelectedKey(this.unloadSelectedKey)
     }
+
+    this.checkNodeUpward(node, true)
   }
 
   private getInsertedNode(
@@ -1168,8 +1190,6 @@ export default class TreeStore extends TreeEventTarget {
       if (node.checked && this.options.cascade) {
         // 向下勾选，包括自身
         this.checkNodeDownward(node, true)
-        // 向上勾选父节点直到根节点
-        this.checkNodeUpward(node)
       }
 
       if (node.selected && overrideSelected) {
@@ -1191,6 +1211,12 @@ export default class TreeStore extends TreeEventTarget {
         this.flattenData(node.children, overrideSelected, result)
       }
     }
+
+    if (this.options.cascade && !!length) {
+      // 向上勾选父节点直到根节点
+      this.checkNodeUpward(nodes[0])
+    }
+
     return result
   }
 
@@ -1230,9 +1256,10 @@ export default class TreeStore extends TreeEventTarget {
   /**
    * 向上勾选/取消勾选父节点，不包括自身
    * @param node 需要勾选的节点
+   * @param fromCurrentNode 是否从当前节点开始处理
    */
-  private checkNodeUpward(node: TreeNode) {
-    let parent = node._parent
+  private checkNodeUpward(node: TreeNode, fromCurrentNode = false) {
+    let parent = fromCurrentNode ? node : node._parent
     while (parent) {
       this.checkParentNode(parent)
       parent = parent._parent
