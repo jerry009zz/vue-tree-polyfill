@@ -235,6 +235,18 @@ export const usePublicTreeAPI = (
         isRootLoading.value = false
       })
   }
+  /**
+   * 更新单个节点
+   */
+  function updateNode(key: TreeNodeKeyType, newNode: ITreeNodeOptions) {
+    return nonReactive.store.updateNode(key, newNode)
+  }
+  /**
+   * 更新多个节点
+   */
+  function updateNodes(newNodes: ITreeNodeOptions[]) {
+    return nonReactive.store.updateNodes(newNodes)
+  }
 
   return {
     unloadCheckedNodes,
@@ -269,5 +281,7 @@ export const usePublicTreeAPI = (
     filter,
     showCheckedNodes,
     loadRootNodes,
+    updateNode,
+    updateNodes,
   }
 }

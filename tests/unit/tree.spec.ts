@@ -168,7 +168,7 @@ describe('树展示测试', () => {
       ).toBe(true)
       expect(
         treeNodes[1].find('.vtree-tree-node__checkbox_indeterminate').exists()
-      ).toBe(true)
+      ).toBe(false)
       expect(
         treeNodes[2].find('.vtree-tree-node__title_selected').exists()
       ).toBe(true)

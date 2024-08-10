@@ -22,3 +22,23 @@
 - 调用树组件的 `remove` 方法，可移除节点
 
 <CodeDemo component="NodeCreationAndRemoval" />
+
+## 更新节点名称 {#update-node-title}
+
+调用树组件的 `updateNode` 方法可更新节点部分字段
+
+调用 `updateNodes` 可批量更新
+
+<CodeDemo component="UpdateNodeTitle" />
+
+## 更新自定义字段 {#update-custom-field}
+
+调用树组件的 `updateNode` 方法更新自定义字段
+
+<CodeDemo component="UpdateCustomField" />
+
+## 重新加载子节点 {#reload-children}
+
+调用 `updateNode` 传入新的 `children` 列表可以重新加载子节点
+
+<CodeDemo component="ReloadChildren" />

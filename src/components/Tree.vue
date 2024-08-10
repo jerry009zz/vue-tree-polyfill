@@ -405,6 +405,8 @@ const {
   filter,
   showCheckedNodes,
   loadRootNodes,
+  updateNode,
+  updateNodes,
 } = usePublicTreeAPI(nonReactive, props, {
   resetSpaceHeights,
   updateExpandedKeys,
@@ -705,6 +707,8 @@ defineExpose({
   filter,
   showCheckedNodes,
   loadRootNodes,
+  updateNode,
+  updateNodes,
   scrollTo,
 })
 
