@@ -172,7 +172,9 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     filter: (keyword: string, filterMethod?: FilterFunctionType | undefined) => void;
     showCheckedNodes: (showUnloadCheckedNodes?: boolean | undefined) => void;
     loadRootNodes: () => Promise<void>;
-    scrollTo: (key: TreeNodeKeyType, verticalPosition?: number | "top" | "center" | "bottom") => void;
+    updateNode: (key: TreeNodeKeyType, newNode: import("../store/tree-node").ITreeNodeOptions) => void;
+    updateNodes: (newNodes: import("../store/tree-node").ITreeNodeOptions[]) => void;
+    scrollTo: (key: TreeNodeKeyType, verticalPosition?: number | "bottom" | "top" | "center") => void;
 }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     [x: string]: (...args: any[]) => void;
 }, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<TreeProps>, {
@@ -211,25 +213,25 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     cascade: boolean;
     defaultExpandAll: boolean;
     expandOnFilter: boolean;
+    titleField: string;
+    checkable: boolean;
+    selectable: boolean;
+    unselectOnClick: boolean;
+    disableAll: boolean;
+    draggable: boolean;
+    droppable: boolean;
+    nodeIndent: number;
     data: AnyPropsArrayType;
     emptyText: string;
-    selectable: boolean;
-    checkable: boolean;
     separator: string;
-    titleField: string;
     showUnloadCheckedNodes: boolean;
     unloadDataList: AnyPropsArrayType;
     enableLeafOnly: boolean;
-    disableAll: boolean;
     defaultExpandedKeys: TreeNodeKeyType[];
     expandedKeys: TreeNodeKeyType[];
-    draggable: boolean;
-    droppable: boolean;
     beforeDropMethod: (dragKey: TreeNodeKeyType, dropKey: TreeNodeKeyType, hoverPart: dragHoverPartEnum) => boolean;
     autoLoad: boolean;
-    unselectOnClick: boolean;
     loading: boolean;
-    nodeIndent: number;
     renderNodeAmount: number;
     nodeMinHeight: number;
     bufferNodeAmount: number;

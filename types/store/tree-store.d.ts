@@ -77,6 +77,12 @@ export default class TreeStore extends TreeEventTarget {
      */
     private triggerCheckedChange;
     /**
+     * 触发 selected-change 的快捷方法
+     * @param triggerEvent 是否触发事件
+     * @param triggerDataChange 是否触发视图刷新
+     */
+    private triggerSelectedChange;
+    /**
      * 设置单选选中
      * @param key 选中节点 key
      * @param value 是否选中
@@ -109,6 +115,9 @@ export default class TreeStore extends TreeEventTarget {
      */
     setExpandKeys(keys: TreeNodeKeyType[], value: boolean, triggerDataChange?: boolean): void;
     setExpandAll(value: boolean, triggerDataChange?: boolean): void;
+    private isChildrenChanged;
+    updateNode(key: TreeNodeKeyType, newNode: ITreeNodeOptions, triggerEvent?: boolean, triggerDataChange?: boolean): void;
+    updateNodes(newNodes: ITreeNodeOptions[]): void;
     /**
      * 获取多选选中节点
      * @param ignoreMode 忽略模式，可选择忽略父节点或子节点，默认值是 VTree 的 ignoreMode Prop
@@ -148,15 +157,17 @@ export default class TreeStore extends TreeEventTarget {
      * @param key 节点 key
      */
     getNode(key: TreeNodeKeyType): TreeNode | null;
-    insertBefore(insertedNode: TreeNodeKeyType | ITreeNodeOptions, referenceKey: TreeNodeKeyType): TreeNode | null;
-    insertAfter(insertedNode: TreeNodeKeyType | ITreeNodeOptions, referenceKey: TreeNodeKeyType): TreeNode | null;
-    append(insertedNode: TreeNodeKeyType | ITreeNodeOptions, parentKey: TreeNodeKeyType): TreeNode | null;
-    prepend(insertedNode: TreeNodeKeyType | ITreeNodeOptions, parentKey: TreeNodeKeyType): TreeNode | null;
+    insertBefore(insertedNode: TreeNodeKeyType | ITreeNodeOptions, referenceKey: TreeNodeKeyType, triggerEvent?: boolean, triggerDataChange?: boolean): TreeNode | null;
+    insertAfter(insertedNode: TreeNodeKeyType | ITreeNodeOptions, referenceKey: TreeNodeKeyType, triggerEvent?: boolean, triggerDataChange?: boolean): TreeNode | null;
+    append(insertedNode: TreeNodeKeyType | ITreeNodeOptions, parentKey: TreeNodeKeyType, triggerEvent?: boolean, triggerDataChange?: boolean): TreeNode | null;
+    prepend(insertedNode: TreeNodeKeyType | ITreeNodeOptions, parentKey: TreeNodeKeyType, triggerEvent?: boolean, triggerDataChange?: boolean): TreeNode | null;
     /**
      * 删除节点
      * @param removedKey 要删除的节点 key
      */
-    remove(removedKey: TreeNodeKeyType, triggerDataChange?: boolean): TreeNode | null;
+    remove(removedKey: TreeNodeKeyType, triggerEvent?: boolean, triggerDataChange?: boolean): TreeNode | null;
+    private removeChildren;
+    private loadChildren;
     private getInsertedNode;
     /**
      * 将一个节点插入 store 记录中
@@ -200,6 +211,7 @@ export default class TreeStore extends TreeEventTarget {
     /**
      * 向上勾选/取消勾选父节点，不包括自身
      * @param node 需要勾选的节点
+     * @param fromCurrentNode 是否从当前节点开始处理
      */
     private checkNodeUpward;
     /**

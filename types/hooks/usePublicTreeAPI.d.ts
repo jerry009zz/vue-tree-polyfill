@@ -60,5 +60,7 @@ export declare const usePublicTreeAPI: (nonReactive: INonReactiveData, props: IU
     filter: (keyword: string, filterMethod?: FilterFunctionType) => void;
     showCheckedNodes: (showUnloadCheckedNodes?: boolean) => void;
     loadRootNodes: () => Promise<void>;
+    updateNode: (key: TreeNodeKeyType, newNode: ITreeNodeOptions) => void;
+    updateNodes: (newNodes: ITreeNodeOptions[]) => void;
 };
 export {};

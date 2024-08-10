@@ -22,10 +22,14 @@ export interface INonReactiveData {
     store: TreeStore;
     blockNodes: TreeNode[];
 }
+type Enumerate<N extends number, Acc extends number[] = []> = Acc['length'] extends N ? Acc[number] : Enumerate<N, [...Acc, Acc['length']]>;
+type IntRange<F extends number, T extends number> = Exclude<Enumerate<T>, Enumerate<F>>;
 export interface ShowLine {
     /** 连接线宽度，svg stroke-width， 默认 1px */
     width?: number;
     type?: showLineType;
     color?: string;
     polyline?: boolean;
+    dashDensity?: IntRange<1, 11>;
 }
+export {};

@@ -103,7 +103,6 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     clearKeyword: () => void;
     getKeyword: () => string;
     search: (keyword1?: string) => Promise<void>;
-    filter: (keyword: string, filterMethod?: import("../store/tree-store.js").FilterFunctionType | undefined) => void;
     setData: (data: import("..").AnyPropsArrayType) => void;
     setChecked: (key: import("..").TreeNodeKeyType, value: boolean) => void;
     setCheckedKeys: (keys: import("..").TreeNodeKeyType[], value: boolean) => void;
@@ -131,9 +130,12 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     append: (insertedNode: import("..").TreeNodeKeyType | import("../store/tree-node.js").ITreeNodeOptions, parentKey: import("..").TreeNodeKeyType) => TreeNode | null;
     prepend: (insertedNode: import("..").TreeNodeKeyType | import("../store/tree-node.js").ITreeNodeOptions, parentKey: import("..").TreeNodeKeyType) => TreeNode | null;
     remove: (removedKey: import("..").TreeNodeKeyType) => TreeNode | null;
+    filter: (keyword: string, filterMethod?: import("../store/tree-store.js").FilterFunctionType | undefined) => void;
     showCheckedNodes: (showUnloadCheckedNodes?: boolean | undefined) => void;
     loadRootNodes: () => Promise<void>;
-    scrollTo: (key: import("..").TreeNodeKeyType, verticalPosition?: number | "top" | "center" | "bottom") => void;
+    updateNode: (key: import("..").TreeNodeKeyType, newNode: import("../store/tree-node.js").ITreeNodeOptions) => void;
+    updateNodes: (newNodes: import("../store/tree-node.js").ITreeNodeOptions[]) => void;
+    scrollTo: (key: import("..").TreeNodeKeyType, verticalPosition?: number | "bottom" | "top" | "center") => void;
 }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     [x: string]: (...args: any[]) => void;
 }, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<TreeSearchProps>, {
@@ -181,25 +183,25 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     cascade: boolean;
     defaultExpandAll: boolean;
     expandOnFilter: boolean;
+    titleField: string;
+    checkable: boolean;
+    selectable: boolean;
+    unselectOnClick: boolean;
+    disableAll: boolean;
+    draggable: boolean;
+    droppable: boolean;
+    nodeIndent: number;
     data: import("..").AnyPropsArrayType;
     emptyText: string;
-    selectable: boolean;
-    checkable: boolean;
     separator: string;
-    titleField: string;
     showUnloadCheckedNodes: boolean;
     unloadDataList: import("..").AnyPropsArrayType;
     enableLeafOnly: boolean;
-    disableAll: boolean;
     defaultExpandedKeys: import("..").TreeNodeKeyType[];
     expandedKeys: import("..").TreeNodeKeyType[];
-    draggable: boolean;
-    droppable: boolean;
     beforeDropMethod: (dragKey: import("..").TreeNodeKeyType, dropKey: import("..").TreeNodeKeyType, hoverPart: import("../constants").dragHoverPartEnum) => boolean;
     autoLoad: boolean;
-    unselectOnClick: boolean;
     loading: boolean;
-    nodeIndent: number;
     renderNodeAmount: number;
     nodeMinHeight: number;
     bufferNodeAmount: number;
