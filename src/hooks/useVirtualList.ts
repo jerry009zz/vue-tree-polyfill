@@ -49,7 +49,7 @@ export const useVirtualList = (nonReactive: INonReactiveData, props: IUseVirtual
    */
   const updateRenderNodes = (isScroll: boolean = false): void => {
     if (blockLength.value > renderAmount.value) {
-      const scrollTop = scrollArea.value.scrollTop
+      const scrollTop = Math.max(scrollArea.value.scrollTop, 0)
       /** 当前滚动了多少节点 */
       const scrollNodeAmount = Math.floor(scrollTop / props.nodeMinHeight)
       renderStart.value =
