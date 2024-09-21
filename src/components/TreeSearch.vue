@@ -216,7 +216,7 @@ function search(keyword1?: string): Promise<void> {
           resolve()
         }
       }
-    }, props.searchDebounceTime)
+    }, props.searchDebounceTime) as unknown as number
   })
 }
 //#endregion Public API

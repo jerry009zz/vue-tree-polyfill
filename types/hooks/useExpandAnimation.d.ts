@@ -2,7 +2,7 @@ import { Ref } from "vue";
 import { TreeNode } from "../store";
 import { TreeProps } from "../components/Tree.vue";
 type IUseExpandAnimationProps = Required<Pick<TreeProps, 'keyField' | 'animation'>>;
-export declare const useExpandAnimation: (renderNodesRef: Ref<TreeNode[]>, props: IUseExpandAnimationProps) => {
+export declare const useExpandAnimation: (renderNodesRef: Ref<TreeNode[]>, renderStartRef: Ref<number>, props: IUseExpandAnimationProps) => {
     ready: Ref<boolean>;
     currentExpandState: Ref<boolean>;
     topNodes: Ref<{
