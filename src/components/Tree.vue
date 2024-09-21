@@ -361,6 +361,7 @@ const {
   blockLength,
   topSpaceHeight,
   bottomSpaceHeight,
+  renderStart,
   resetSpaceHeights,
   updateRender,
   updateBlockNodes,
@@ -369,7 +370,7 @@ const {
   scrollTo,
 } = useVirtualList(nonReactive, props)
 
-const expandAnimation = useExpandAnimation(renderNodes, props)
+const expandAnimation = useExpandAnimation(renderNodes, renderStart, props)
 
 const {
   unloadCheckedNodes,

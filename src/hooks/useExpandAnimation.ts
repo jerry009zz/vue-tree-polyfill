@@ -7,7 +7,7 @@ type IUseExpandAnimationProps = Required<Pick<TreeProps,
 'animation'
 >>
 
-export const useExpandAnimation = (renderNodesRef: Ref<TreeNode[]>, props: IUseExpandAnimationProps) => {
+export const useExpandAnimation = (renderNodesRef: Ref<TreeNode[]>, renderStartRef: Ref<number>, props: IUseExpandAnimationProps) => {
   const expandAnimationStart = ref(false)
   const expandAnimationReady = ref(false)
   const expandNodeIndex = ref(-1)
@@ -15,6 +15,7 @@ export const useExpandAnimation = (renderNodesRef: Ref<TreeNode[]>, props: IUseE
   const expandNodeCurrentState = ref(false)
   const expandNodeNextState = ref(false)
 
+  const expandRenderStart = ref(0)
   const expandTopNodes = ref<TreeNode[]>([])
   const expandMiddleNodes = ref<TreeNode[]>([])
   const expandBottomNodes = ref<TreeNode[]>([])
@@ -25,6 +26,7 @@ export const useExpandAnimation = (renderNodesRef: Ref<TreeNode[]>, props: IUseE
     expandNodeIndex.value = -1
     expandNodeLevel.value = -1
 
+    expandRenderStart.value = 0
     expandTopNodes.value = []
     expandMiddleNodes.value = []
     expandBottomNodes.value = []
@@ -34,7 +36,8 @@ export const useExpandAnimation = (renderNodesRef: Ref<TreeNode[]>, props: IUseE
     const nodeToExpandLevel = expandNodeLevel.value
     const middleNodes: TreeNode[] = []
     const renderNodesLength = renderNodesRef.value.length
-    for (let i = expandNodeIndex.value + 1; i < renderNodesLength; i++) {
+    const expandRenderStartDiff = renderStartRef.value - expandRenderStart.value
+    for (let i = expandNodeIndex.value - expandRenderStartDiff + 1; i < renderNodesLength; i++) {
       if (renderNodesRef.value[i]._level > nodeToExpandLevel) {
         middleNodes.push(renderNodesRef.value[i])
       } else break
@@ -54,6 +57,7 @@ export const useExpandAnimation = (renderNodesRef: Ref<TreeNode[]>, props: IUseE
       expandAnimationStart.value = true
       expandNodeCurrentState.value = nodeToExpand.expand
       expandNodeNextState.value = !nodeToExpand.expand
+      expandRenderStart.value = renderStartRef.value
 
       if (expandNodeNextState.value) {
         expandBottomNodes.value = renderNodesRef.value.slice(expandNodeIndex.value + 1)
@@ -74,11 +78,12 @@ export const useExpandAnimation = (renderNodesRef: Ref<TreeNode[]>, props: IUseE
     if (expandNodeIndex.value === -1) return
 
     nextTick(() => {
-      expandTopNodes.value = renderNodesRef.value.slice(0, expandNodeIndex.value + 1)
+      const expandRenderStartDiff = renderStartRef.value - expandRenderStart.value
+      expandTopNodes.value = renderNodesRef.value.slice(0, expandNodeIndex.value - expandRenderStartDiff + 1)
       if (expandNodeNextState.value) {
         updateMiddleNodes()
       } else {
-        expandBottomNodes.value = renderNodesRef.value.slice(expandNodeIndex.value + 1)
+        expandBottomNodes.value = renderNodesRef.value.slice(expandNodeIndex.value - expandRenderStartDiff + 1)
       }
       expandAnimationReady.value = true
       nextTick(() => {
