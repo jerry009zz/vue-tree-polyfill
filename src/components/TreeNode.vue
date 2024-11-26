@@ -73,7 +73,8 @@ type PickedProps = Required<Pick<TreeProps,
   'disableAll' |
   'draggable' |
   'droppable' |
-  'nodeIndent'
+  'nodeIndent' |
+  'expandOnClickNode'
 >> & Pick<TreeProps, 'render' | 'showLine'>
 
 export type TreeNodeProps = PickedProps & {
@@ -223,7 +224,7 @@ function handleCheck(): void {
   emit('check', fullData.value)
 }
 
-function handleSelect(e: MouseEvent): void {
+const handleSelect = useSingleClick((e: MouseEvent): void => {
   emit('click', fullData.value, e)
   if (props.selectable) {
     if (props.disableAll || props.data?.disabled) return
@@ -232,9 +233,9 @@ function handleSelect(e: MouseEvent): void {
   } else if (props.checkable) {
     handleCheck()
   } else {
-    handleExpand()
+    props.expandOnClickNode && handleExpand()
   }
-}
+})
 
 function handleDblclick(e: MouseEvent): void {
   emit('node-dblclick', fullData.value, e)
@@ -254,6 +255,26 @@ function getHoverPart(e: DragEvent) {
   if (y <= height * 0.3) return dragHoverPartEnum.before
   if (y <= height * (0.3 + 0.4)) return dragHoverPartEnum.body
   return dragHoverPartEnum.after
+}
+
+/**
+ * 仅单机时触发回调事件
+ * @param cb 单机时触发的回调事件
+ * @param interval 判定是否为连续点击的间隔时间
+ * @returns {Function} 节流后的回调事件
+ */
+function useSingleClick(cb: Function, interval = 200): (...args: any[]) => void {
+    let T: number
+    let num = 0
+
+    return (...args: any[]) => {
+        num++
+        clearTimeout(T)
+        T = setTimeout(() => {
+            num === 1 && cb(...args)
+            num = 0
+        }, interval)
+    }
 }
 
 /**
