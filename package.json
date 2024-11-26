@@ -1,5 +1,5 @@
 {
-  "name": "@wsfe/vue-tree-polyfill",
+  "name": "vue-tree-polyfill",
   "version": "4.1.1",
   "types": "./types",
   "description": "A vue tree component using virtual list.",
